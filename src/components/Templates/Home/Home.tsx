@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { fadeIn } from "@/components/Animations/FadeIn";
 import ParticlesContainer from "@/components/Other/ParticlesContainer/ParticlesContainer";
 import ProjectsBtn from "@/components/Other/ProjectsBtn/ProjectsBtn";
+import ResumeBtn from "@/components/Other/ResumeBtn/ResumeBtn";
 import Avatar from "@/components/Other/Avatar/Avatar";
 
 const Home = () => {
@@ -18,21 +19,48 @@ const Home = () => {
           </h1>
           <p
             className="max-w-sm xl:max-w-xl mx-auto xl:mx-0 mb-10 xl:mb-8">
-            I’m a 3rd-year AI & Data Science student at KL University with a strong passion for building solutions that bridge data, code, and the cloud. 
+            I'm a 3rd-year AI & Data Science student at KL University with a strong passion for building solutions that bridge data, code, and the cloud. 
           </p>
-          <div className="flex justify-center xl:hidden relative">
-            <ProjectsBtn />
-          </div>
-          <div>
-            <motion.div
-              variants={fadeIn("down", 0.4)}
-              initial="hidden"
-              animate="show"
-              exit="hidden"
-              className="hidden xl:flex"
-            >
+          
+          {/* Buttons container */}
+          <div className="flex flex-col xl:flex-row gap-4 xl:gap-6 items-center xl:items-start">
+            {/* Mobile - Projects button */}
+            <div className="flex justify-center xl:hidden relative">
               <ProjectsBtn />
-            </motion.div>
+            </div>
+            
+            {/* Desktop - Both buttons side by side */}
+            <div className="hidden xl:flex gap-6 items-center">
+              <motion.div
+                variants={fadeIn("down", 0.4)}
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+              >
+                <ProjectsBtn />
+              </motion.div>
+              
+              <motion.div
+                variants={fadeIn("down", 0.6)}
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+              >
+                <ResumeBtn />
+              </motion.div>
+            </div>
+            
+            {/* Mobile - Resume button */}
+            <div className="flex justify-center xl:hidden">
+              <motion.div
+                variants={fadeIn("down", 0.6)}
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+              >
+                <ResumeBtn />
+              </motion.div>
+            </div>
           </div>
         </div>
       </div>

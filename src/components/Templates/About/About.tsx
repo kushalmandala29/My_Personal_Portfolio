@@ -51,42 +51,54 @@ const About = () => {
           exit="hidden"
           className="flex flex-col w-full xl:max-w-[48%] h-[480px]">
           <div className="flex gap-4 xl:gap-x-8 mx-auto xl:mx-0 mb-4">
-            {aboutData.map((item: AboutData, index: number) => (
-              <div
-                key={`about-${index}`}
-                className={`${index === index &&
-                  "text-accent after:w-[100%] after:bg-accent after:transition-all after:duration-300"
-                  } cursor-pointer capitalize xl:text-lg xl:first:hidden relative after:w-8 after:h-[2px] after:bg-white after:absolute after:-bottom-1 after:left-0 text-[15px]`}
-                onClick={() => setIndex(index)}
-              >
-                {item.title}
-              </div>
-            ))}
+            {aboutData.map((item: AboutData, itemIndex: number) => {
+              const isActive = index === itemIndex;
+              const isFirstTab = itemIndex === 0;
+              
+              return (
+                <div
+                  key={`about-${itemIndex}`}
+                  className={`
+                    ${isActive ? "text-accent after:w-[100%] after:bg-accent" : "text-white/60 after:w-8 after:bg-white"}
+                    ${isFirstTab ? "xl:hidden" : ""}
+                    cursor-pointer capitalize xl:text-lg relative 
+                    after:h-[2px] after:absolute after:-bottom-1 after:left-0 
+                    after:transition-all after:duration-300
+                    text-[15px] hover:text-accent transition-all duration-300
+                  `}
+                  onClick={() => {
+                    setIndex(itemIndex);
+                  }}
+                >
+                  {item.title}
+                </div>
+              );
+            })}
           </div>
           <div className="py-2 xl:py-6 flex flex-col gap-y-2 xl:gap-y-4 items-center xl:items-start scrollbar-none md:max-h-40 max-h-80 xl:overflow-hidden overflow-y-scroll xl:max-h-full">
-            {aboutData[index].info.map((item: AboutInfo, index: number) => (
-              <div key={`info-${index}`} className="flex-1 flex flex-col max-w-max gap-2 items-center text-white/60 xl:items-start">
-                <div key={`title-stage-${index}`} className={`font-light mb-2 md:mb-0 whitespace-nowrap flex items-center gap-3 ${item.title ? "" : "hidden"}`}>
+            {aboutData[index].info.map((item: AboutInfo, itemIndex: number) => (
+              <div key={`info-${itemIndex}`} className="flex-1 flex flex-col max-w-max gap-2 items-center text-white/60 xl:items-start">
+                <div key={`title-stage-${itemIndex}`} className={`font-light mb-2 md:mb-0 whitespace-nowrap flex items-center gap-3 ${item.title ? "" : "hidden"}`}>
                   <span className="text-white">{item.title}</span>
                   {item.stage && <span className="text-accent">- {item.stage}</span>}
                 </div>
                 {item.course && (
-                  <div key={`course-${index}`} className="text-sm text-white/80 font-medium">
+                  <div key={`course-${itemIndex}`} className="text-sm text-white/80 font-medium">
                     {item.course}
                   </div>
                 )}
                 {item.grade && (
-                  <div key={`grade-${index}`} className="text-sm text-accent">
+                  <div key={`grade-${itemIndex}`} className="text-sm text-accent">
                     {item.grade}
                   </div>
                 )}
                 {!item.course && !item.grade && item.stage && (
-                  <div key={`stage-${index}`}>{item.stage}</div>
+                  <div key={`stage-${itemIndex}`}>{item.stage}</div>
                 )}
-                <div key={`hidden-${index}`} className="hidden md:flex"></div>
-                <div key={`icons-${index}`} className="flex gap-4 flex-wrap xl:justify-start justify-center xl xl:px-0 px-5 xl:max-w-[500px]">
+                <div key={`hidden-${itemIndex}`} className="hidden md:flex"></div>
+                <div key={`icons-${itemIndex}`} className="flex gap-4 flex-wrap xl:justify-start justify-center xl xl:px-0 px-5 xl:max-w-[500px]">
                   {item.icons?.map((icon, iconIndex) => (
-                    <div key={`icon-${index}-${iconIndex}`} className="text-2xl text-white/90">
+                    <div key={`icon-${itemIndex}-${iconIndex}`} className="text-2xl text-white/90">
                       <Icon className="" width={24} height={24} id={icon} />
                     </div>
                   ))}
@@ -96,7 +108,7 @@ const About = () => {
           </div>
         </motion.div>
       </div>
-      <div className="w-[100vw] h-full absolute right-0 bottom-0">
+      <div className="w-[100vw] h-full absolute right-0 bottom-0 -z-10">
         <div className="xl:opacity-100 opacity-30 bg-paints bg-cover bg-center bg-no-repeat hue-rotate-[-20deg] w-full h-full absolute mix-blend-color-dodge translate-z-0">
         </div>
         <ParticlesContainer />
