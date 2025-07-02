@@ -4,9 +4,9 @@ import { SeoInterface } from "@/interfaces/SeoInterface";
 const Seo = ({ title, description }: SeoInterface) => {
     return (
         <Head>
-            <meta name="author" content="Vagner Mengali" />
+            <meta name="author" content="Kushal Mandala" />
             <meta name="keywords" content="Javascript" />
-            <link rel="fluid-icon" href="/favicon.webp" title="Vagner Mengali" />
+            <link rel="fluid-icon" href="/favicon.webp" title="Kushal Mandala" />
             <link rel="icon" type="svg+xml" href="/favicon.webp" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>{title}</title>

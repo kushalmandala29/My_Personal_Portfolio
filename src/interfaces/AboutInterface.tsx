@@ -6,5 +6,7 @@ export interface AboutData {
 export interface AboutInfo {
     title: string;
     stage?: string;
+    course?: string;
+    grade?: string;
     icons?: React.ReactNode[];
 }

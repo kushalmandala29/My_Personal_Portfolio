@@ -35,7 +35,7 @@ export const aboutData = [
     },
     {
         id: "skills",
-        title: "Habilidades",
+        title: "Skills",
         info: [
             {
                 id: "web-development",
@@ -62,6 +62,13 @@ export const aboutData = [
                     "SQlite",
                     "Sass",
                     "Vtex",
+                    "AWS",
+                    "Redux",
+                    "GraphQL",
+                    "Redis",
+                    "FastAPI",
+                    "Vue",
+                    "Angular",
                 ],
             },
             {
@@ -69,11 +76,12 @@ export const aboutData = [
                 title: "UI/UX Design ",
                 icons: [
                     "Figma",
+                    "Canva",
                 ],
             },
             {
                 id: "tools",
-                title: "Ferramentas",
+                title: "Tools",
                 icons: [
                     "Windows",
                     "Linux",
@@ -82,86 +90,80 @@ export const aboutData = [
                     "Jira",
                     "Notion",
                     "Trello",
+                    "Postman",
+                    "GitHub",
+                    "Vercel",
+                    "Netlify",
+                    "Cypress",
+                    "Webpack",
+                    "Vite",
+                ],
+            },
+            {
+                id: "mobile-development",
+                title: "Mobile Development",
+                icons: [
+                    "React Native",
+                    "Flutter",
+                    "Expo",
                 ],
             },
         ],
     },
     {
         id: "education",
-        title: "Educação",
+        title: "Education",
         info: [
             {
                 id: "education1",
-                title: "Desenvolvimento web full stack ",
-                stage: "mar de 2023",
+                title: "KL University",
+                stage: "2022 - Present",
+                course: "Bachelor of Technology in Artificial Intelligence and Data Science",
+                grade: "CGPA: 9.56/10",
                 key: "education1",
             },
             {
                 id: "education2",
-                title: "Back end avançado ",
-                stage: "fev de 2023",
+                title: "SRI SRINIVASA GRAVIITY Junior college",
+                stage: "2020 - 2022",
+                course: "M.P.C",
+                grade: "CGPA: 889/1000",
                 key: "education2",
             },
             {
                 id: "education3",
-                title: "DevOps & Agile culture ",
-                stage: "fev de 2023",
+                title: "V.P.S Public School",
+                stage: "2011-2020",
+                grade: "CGPA: 7.55/10",
                 key: "education3",
             },
-            {
-                id: "education4",
-                title: "Introdução ao back end ",
-                stage: "jan de 2023",
-                key: "education4",
-            },
-            {
-                id: "education5",
-                title: "Programação web intermediária ",
-                stage: "out de 2022",
-                key: "education5",
-            },
-            {
-                id: "education6",
-                title: "Desenvolvimento web front end ",
-                stage: "set de 2022",
-                key: "education6",
-            },
-            {
-                id: "education7",
-                title: "Introdução ao back end ",
-                stage: "jun de 2022",
-                key: "education7",
-            },
+           
+          
         ],
     },
     {
         id: "experience",
-        title: "Experiência",
+        title: "Work Experience",
         info: [
             {
                 id: "experience1",
-                title: "Wicomm | Desenvolvedor front end ",
-                stage: "abr 2023 - o momento",
+                title: "KLGLUG + BalaSwecha(SwechaAP) || term paper",
+                stage: "Feb 2025 - Apr 2025",
                 key: "experience1",
             },
             {
                 id: "experience2",
-                title: "Kenzie Academy Brasil | Monitor ",
-                stage: "mai 2022 - nov 2022",
+                title: "SmartInternz || Bussiness Analyst Intern",
+                stage: "Apr 2024 - June 2024",
                 key: "experience2",
             },
             {
                 id: "experience3",
-                title: "Fitoxs | Desenvolvedor full stack ",
-                stage: "set 2020 - fev 2020",
+                title: " AICTE x Edunet x AWS || AI ML Virtual Internship",
+                stage: "Jan 2024 - Mar 2024",
                 key: "experience3",
             },
-            {
-                id: "experience4",
-                title: "Fitoxs | Desenvolvedor front end ",
-                stage: "fev 2020 - set 2020",
-                key: "experience4",
-            },
+            
         ],
     },
     /*     {

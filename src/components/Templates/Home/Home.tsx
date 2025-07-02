@@ -9,16 +9,16 @@ const Home = () => {
 
   return (
     <div className="bg-gradient bg-contain bg-repeat bg-bottom max-h-dvh">
-      <div className="w-full bg-primary/30 bg-cube h-screen  from-primary/10 via-black/30 to-black/10">
+      <div className="w-full bg-cube h-screen  from-primary/10 via-black/30 to-black/10">
         <div className="text-center flex flex-col justify-start xl:pt-[6%] pt-16 mb-14 xl:mb-0 xl:mt-0 xl:text-left h-full container mx-auto relative z-10">
           <h1
             className="h1 xl:mt-8 mt-0 mx-auto xl:mx-0 mb-8 w-fit">
-            Transformando códigos <br /> em{" "}
-            <span className="text-accent">Realidade Digital</span>
+            Hello, My name is <br /> 
+            <span className="text-accent">Kushal</span>
           </h1>
           <p
             className="max-w-sm xl:max-w-xl mx-auto xl:mx-0 mb-10 xl:mb-8">
-            Entusiasta de tecnologia com vasta experiência em desenvolvimento web. Especializado em JavaScript e TypeScript, com ênfase na construção de interfaces modernas usando React.js e Next.js. Dedico-me apaixonadamente a criar soluções elegantes e eficazes que aprimoram a experiência do usuário.
+            I’m a 3rd-year AI & Data Science student at KL University with a strong passion for building solutions that bridge data, code, and the cloud. 
           </p>
           <div className="flex justify-center xl:hidden relative">
             <ProjectsBtn />

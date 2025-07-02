@@ -19,7 +19,7 @@ const ParticlesContainer = () => {
         fullScreen: { enable: false },
         background: {
           color: {
-            value: ",",
+            value: "transparent",
           },
         },
         fpsLimit: 120,
@@ -47,10 +47,10 @@ const ParticlesContainer = () => {
           },
           particles: {
             color: {
-              value: "969EAF",
+              value: "#969EAF",
             },
             links: {
-              color: "BEC9E2",
+              color: "#BEC9E2",
               distance: 150,
               enable: true,
               opacity: 0.5,
