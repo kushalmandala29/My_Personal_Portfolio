@@ -1,42 +1,86 @@
 export const projectData = [
   {
+    id: "ToxiTrack – Serverless Telegram Moderator",
     image: "/portfolio-purple.webp",
     category: "front end",
-    name: "Portfolio Open Source",
-    description: "Este é um portfólio desenvolvido para beneficiar desenvolvedores que ainda não têm seu portfólio ou desenvolvedores que desejam um portfólio já pronto.",
+    name: "🛡️ ToxiTrack – Serverless Telegram Moderator",
+    description: "ToxiTrack is a fully serverless Telegram moderation bot that automatically detects and flags toxic messages in group and private chats using AWS services and the Telegram Bot API.",
+    longDescription: "ToxiTrack uses Amazon Comprehend to analyze message sentiment in real time, helping keep conversations safe by alerting admins to toxic content instantly. Built with AWS Lambda, DynamoDB, SNS, and deployed via Terraform, the solution is serverless, scalable, and easy to maintain. The bot integrates seamlessly with Telegram chats to automate moderation without manual oversight.",
+    technologies: ['AWS Lambda', 'Amazon Comprehend', 'DynamoDB', 'Amazon SNS', 'API Gateway', 'IAM', 'Terraform', 'Telegram Bot API'],
+    features: ['Automated Toxicity Detection', 'Real-time Moderation', 'Private & Group Chat Support', 'Flagged Message Review', 'Serverless & Scalable','Infrastructure as Code'],
+    challenges: "Key challenges included minimizing latency for near-instant detection in a serverless environment and fine-tuning sentiment thresholds to reduce false positives and negatives. Ensuring security for Telegram webhooks and AWS endpoints was critical, along with managing user state in stateless Lambda functions and keeping resource costs optimized.",
+    learnings: "This project strengthened my understanding of building serverless systems on AWS and integrating third-party APIs. I learned practical ways to apply sentiment analysis in real-time moderation, mastered infrastructure automation with Terraform, and gained experience securing cloud-based bot deployments while balancing performance and cost.",
     link: "https://developer-purple-portfolio-vagnermengali.vercel.app/",
-    github: "https://github.com/vagnermengali/developer-purple-portfolio"
+    github: "https://github.com/kushalmandala29/ToxiTrack-Serverless-Telegram-Moderator.git"
   },
   {
+    id: "Student Assistant System",
     image: "/yrprey.webp",
     category: "front end",
-    name: "YRprey",
-    description: "Um site modelo que simula diversas vulnerabilidades e falhas de segurança, desafiando desenvolvedores a testar suas habilidades na detecção e correção desses problemas em sistemas web.",
-    link: "https://yrprey-vagnermengali.vercel.app/",
-    github: "https://github.com/vagnermengali/yrprey"
+    name: "Student Assistant System",
+    description: "Student Assistant System is an AI-powered Retrieval-Augmented Generation (RAG) chatbot that helps students find information about colleges, courses, programs, and fee structures through a conversational interface.",
+    longDescription: "The Student Assistant System is a conversational AI tool built on a RAG architecture that combines local LLM inference with real-time data retrieval. It dynamically scrapes and persists information from educational data sources, enabling students to query details about colleges, courses, and fees in an interactive way. By leveraging Ollama for large language models and embeddings, and ChromaDB for vector storage, the system provides relevant, contextual answers to student queries. It features a user-friendly Streamlit interface and uses data sourced from CollegeDunia.com solely for educational purposes, with no commercial intent.",
+    technologies: ['Python 3.9+', 'Ollama', 'ChromaDB', 'Streamlit', 'Brave Search API', 'LLM Models (llama3.1)', 'Embedding Models (nomic-embed-text)'],
+    features: ['Real-time College Information Retrieval', 'Course and Program Details Lookup', 'Fee Structure Information', 'Dynamic Web Scraping', 'Persistent Knowledge Base', 'Conversational UI'],
+    challenges: "A key challenge was ensuring the accuracy and consistency of dynamically scraped educational data, which often varied in structure or format. Integrating Ollama’s LLMs with a vector database for retrieval-augmented answers required careful tuning for relevance and response quality. Balancing latency for real-time responses while processing large datasets posed technical hurdles as well.",
+    learnings: "hrough this project, I gained hands-on experience implementing Retrieval-Augmented Generation systems, integrating LLMs with vector databases, and building conversational interfaces with Streamlit. I also learned practical approaches to dynamic web scraping and managing knowledge bases for real-time AI applications.",
+    link: "https://developer-green-portfolio-vagnermengali.vercel.app/",
+    github: "https://github.com/kushalmandala29/Student-Assistant-System.git"
   },
   {
+    id: "Interactive_Projectile_Motion_Simulation_accross_planets",
     image: "/portfolio-green.webp",
     category: "front end",
-    name: "Portfolio Open Source",
-    description: "Este é um portfólio desenvolvido para beneficiar desenvolvedores que ainda não têm seu portfólio ou desenvolvedores que desejam um portfólio já pronto.",
+    name: "Interactive_Projectile_Motion_Simulation_accross_planets",
+    description: "Interactive_Projectile_Motion_Simulation_accross_planets is an interactive web-based simulation that visualizes how projectiles behave under different planetary gravities, allowing users to explore the effects of varying gravity on projectile trajectories across the Solar System.",
+    longDescription: "This simulation provides a hands-on way to learn about projectile motion physics by letting users launch virtual projectiles on different planets with accurate gravitational settings. It uses a real-time 3D rendering engine to display trajectories affected by each planet’s unique gravity, giving an intuitive understanding of how factors like initial velocity, angle, and planetary gravity influence projectile paths. By offering adjustable parameters and dynamic visual feedback, the tool helps students and enthusiasts deepen their understanding of classical mechanics concepts in an engaging and interactive environment.",
+    technologies: ['JavaScript ES6+', 'Three.js', 'Cannon.js', 'WebGL 2.0', 'HTML5', 'CSS3','MediaPipe','TensorFlow.js'],
+    features: ['Interactive Projectile Launch Controls', 'Accurate Planetary Gravity Simulation', 'Real-Time 3D Trajectory Visualization', 'Adjustable Launch Parameters', 'Planet Selection for Comparison', 'Physics-Based Motion Calculations'],
+    challenges: "A key challenge was removing buffering and lag in hand gesture detection to ensure that object movements accurately matched the user’s actual hand motions in real time. Achieving smooth, jerk-free movement of simulated objects required fine-tuning the gesture recognition pipeline and optimizing the responsiveness of the system to deliver natural, fluid interactions without noticeable delays or stuttering.",
+    learnings: "Through this project, I learned advanced techniques for calibrating hand gesture recognition systems to achieve smooth, real-time control of 3D objects. I gained hands-on experience minimizing latency and eliminating jerky movements in gesture-driven simulations, along with improving the responsiveness of interactive web applications that rely on continuous input from computer vision models.",
     link: "https://developer-green-portfolio-vagnermengali.vercel.app/",
-    github: "https://github.com/vagnermengali/developer-green-portfolio"
+    github: "https://github.com/kushalmandala29/Interactive_Projectile_Motion_Simulation_accross_planets.git"
   },
   {
+    id: "Employment Leave Management System",
     image: "/dogma.webp",
     category: "front end",
-    name: "Dogma",
-    description: "Um website dedicado à empresa de construção, fornecendo informações sobre serviços, projetos concluídos e contatos.",
+    name: "Employment Leave Management System",
+    description: "Employment Leave Management System is a Django-based web application designed to streamline employee leave requests and approvals, providing an intuitive interface for employees, managers, and HR administrators to manage leave workflows effectively.",
+    longDescription: "This system enables employees to register, log in securely, and submit various types of leave applications, such as annual, sick, or casual leave. Managers and HR personnel can review, approve, reject, or comment on leave requests through role-specific dashboards. The application leverages Django’s built-in authentication and admin capabilities to enforce role-based access, ensuring each user only sees the relevant features for their role (Employee, Manager, or Admin). With a responsive front end built on HTML, CSS, and Bootstrap, the system delivers a seamless experience on both desktop and mobile devices. The admin panel allows HR to manage users, leave types, and organizational settings, making the system flexible and easily adaptable for different organizations.",
+    technologies: ['Python 3', 'Django ', 'SQLite', 'HTML', 'CSS', 'Bootstrap 5'],
+    features: ['Employee Self-Service Registration & Login', 'Leave Application Submission', 'Manager/HR Approval Workflow', 'Role-Based Access Control', 'Responsive Dashboards', 'Admin Panel for Management'],
+    challenges: "A major challenge was implementing clear, secure role-based access control to ensure each user type only accessed appropriate functionalities. Ensuring data integrity between leave applications, approvals, and user profiles required careful database design and Django model relationships. Providing responsive, intuitive dashboards that work seamlessly across devices also posed design and front-end integration challenges.",
+    learnings: "This project enhanced my skills in building secure, role-based web applications with Django, designing relational data models for HR workflows, and creating responsive, user-friendly interfaces with Bootstrap. I also gained practical experience managing user authentication, session handling, and customizing Django’s admin panel for real-world organizational requirements.",
     link: "https://www.grupodogma.site/",
-    github: "https://github.com/vagnermengali/dogma"
+    github: "https://github.com/kushalmandala29/employment-leave-management-system.git"
   },
   {
+    id: "Music Recommendation System",
     image: "/portfolio-blue.webp",
     category: "front end",
-    name: "Portfolio Open Source",
-    description: "Este é um portfólio desenvolvido para beneficiar desenvolvedores que ainda não têm seu portfólio ou desenvolvedores que desejam um portfólio já pronto.",
+    name: "Music Recommendation System",
+    description: "Music Recommendation System is a text-based recommendation engine that analyzes song lyrics or descriptions to group similar songs and suggest personalized recommendations, leveraging text processing and unsupervised learning techniques.",
+    longDescription: "This system uses TF-IDF (Term Frequency-Inverse Document Frequency) to vectorize song lyrics or metadata, capturing their semantic meaning. By applying K-means clustering, it groups songs with similar themes or characteristics, enabling the recommendation of new songs based on lyrical or descriptive similarity. Evaluation metrics like Silhouette Score and the Elbow Method help optimize the number of clusters for better recommendation accuracy. The system includes a Streamlit-based user interface for interactive exploration, allowing users to input a song and receive a curated list of similar tracks.",
+    technologies: ['Python 3', 'Scikit-learn', 'Streamlit'],
+    features: ['TF-IDF Text Vectorization', 'K-means Clustering of Songs', 'Silhouette Score Evaluation', 'Elbow Method for Cluster Optimization', 'Streamlit Interactive UI'],
+    challenges: "A key challenge was tuning the text processing pipeline to handle diverse song lyric styles, including short phrases, slang, or multilingual elements. Determining the optimal number of clusters for meaningful groupings required extensive evaluation and interpretation of clustering metrics. Integrating the recommendation logic with an interactive Streamlit interface while keeping response times low also posed technical hurdles.",
+    learnings: "I learned how to apply natural language processing techniques like TF-IDF to real-world text data, optimize K-means clustering for recommendation systems, and evaluate clustering performance using appropriate metrics. Additionally, I gained hands-on experience building interactive data apps with Streamlit and deploying end-to-end recommendation pipelines.",
     link: "https://developer-blue-portfolio-vagnermengali.vercel.app/",
-    github: "https://github.com/vagnermengali/developer-blue-portfolio"
+    github: "https://github.com/kushalmandala29/Music-Recommendation-Project.git"
+  },
+  {
+    id: "Dog Breed Classification",
+    image: "/portfolio-blue.webp",
+    category: "front end",
+    name: "Dog Breed Classification",
+    description: "Dog Breed Classification Project is a deep learning-based system capable of accurately identifying 120 different dog breeds with 92% accuracy, featuring a user-friendly web interface for instant breed predictions from uploaded images.",
+    longDescription: "This project uses a multi-model ensemble of state-of-the-art CNN architectures, including InceptionV3, Xception, InceptionResNetV2, and NASNetLarge, trained on the Stanford Dogs Dataset. The ensemble approach ensures robust performance across diverse poses, lighting conditions, and scales. A Streamlit-based web interface allows users to upload photos of dogs and receive real-time breed predictions along with confidence scores. With an overall accuracy of 92%, the system demonstrates strong generalization across 120 breeds, making it a reliable tool for educational, veterinary, or enthusiast applications.",
+    technologies: ['TensorFlow/Keras', 'Python 3.x', 'Streamlit'],
+    features: [ '92% Classification Accuracy', 'Interactive Web Interface', 'Real-Time Image-Based Predictions', 'Training on Stanford Dogs Dataset'],
+    challenges: "The biggest challenge was managing the complexity of training multiple deep CNN architectures on a large, diverse dataset while avoiding overfitting. Ensuring consistent performance across breeds with significant intra-class variation required careful augmentation and regularization. Integrating the ensemble into an efficient real-time prediction pipeline and building a responsive web interface also posed technical hurdle",
+    learnings: "This project enhanced my understanding of training and fine-tuning large CNN models, ensemble learning strategies, and best practices for balancing accuracy and generalization. I gained experience integrating deep learning pipelines with interactive web apps using Streamlit, optimizing inference performance, and working with complex image datasets.",
+    link: "https://developer-blue-portfolio-vagnermengali.vercel.app/",
+    github: "https://github.com/kushalmandala29/dog_breed_classifications.git"
   },
 ];

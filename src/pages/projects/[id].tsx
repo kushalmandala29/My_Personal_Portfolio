@@ -1,0 +1,291 @@
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import Image from 'next/image';
+import { 
+  RiGithubFill, 
+  RiExternalLinkFill, 
+  RiArrowLeftLine,
+  RiCodeSSlashLine,
+  RiLightbulbLine,
+  RiStackLine
+} from 'react-icons/ri';
+
+import Seo from '@/components/Other/Seo';
+import { fadeIn } from '@/components/Animations/FadeIn';
+import { Badge } from '@/components/Other/UI/badge';
+import { Card, CardHeader, CardContent } from '@/components/Other/UI/card';
+import ParticlesContainer from '@/components/Other/ParticlesContainer/ParticlesContainer';
+
+import { projectData } from '@/data/project';
+
+interface ProjectDetailProps {
+  project: {
+    id: string;
+    image: string;
+    category: string;
+    name: string;
+    description: string;
+    longDescription: string;
+    technologies: string[];
+    features: string[];
+    challenges: string;
+    learnings: string;
+    link: string;
+    github: string;
+  };
+}
+
+const ProjectDetail = ({ project }: ProjectDetailProps) => {
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
+  if (!project) {
+    return <div>Project not found</div>;
+  }
+
+  return (
+    <>
+      <Seo
+        title={`${project.name} • Vagner Mengali • Portfólio`}
+        description={project.description}
+      />
+      
+      <div className="xl:h-[inherit] h-auto xl:pt-[3%] xl:py-24 pt-12 pb-14 xl:pb-0 xl:mt-0 flex items-start max-h-dvh relative overflow-hidden">
+        <ParticlesContainer />
+        
+        <div className="container mx-auto relative z-10 w-full max-h-[90vh] overflow-y-auto scrollbar-custom">
+          <motion.div
+            variants={fadeIn("down", 0.6)}
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            className="w-full"
+          >
+            {/* Header with back button */}
+            <div className="flex items-center justify-between mb-8">
+              <Link 
+                href="/projects"
+                className="flex items-center gap-2 text-accent hover:text-white transition-colors duration-300"
+              >
+                <RiArrowLeftLine className="text-xl" />
+                <span>Voltar aos Projetos</span>
+              </Link>
+              
+              <Badge className="uppercase text-sm font-medium">
+                {project.category}
+              </Badge>
+            </div>
+
+            {/* Project Header */}
+            <motion.div
+              variants={fadeIn("up", 0.2)}
+              className="text-center mb-12"
+            >
+              <motion.h1 
+                className="h2 mb-4 relative"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              >
+                <span className="relative z-10">
+                  {project.name} <span className="text-accent animate-pulse">.</span>
+                </span>
+                <motion.div 
+                  className="absolute -inset-2 bg-gradient-to-r from-accent/20 via-accent/10 to-accent/20 rounded-lg opacity-0 blur-xl"
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
+              </motion.h1>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                {project.description}
+              </p>
+            </motion.div>
+
+            {/* Project Image and Links */}
+            <motion.div
+              variants={fadeIn("up", 0.4)}
+              className="mb-12"
+            >
+              <Card className="overflow-hidden">
+                <CardHeader className="p-0">
+                  <div className="relative w-full h-96 flex items-center justify-center bg-secondary/40 overflow-hidden group">
+                    <Image
+                      src={project.image}
+                      width={600}
+                      height={400}
+                      alt={project.name}
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
+                      {project.link && (
+                        <Link
+                          target="_blank"
+                          href={project.link}
+                          aria-label="Ver projeto"
+                          className="bg-accent hover:bg-accent/80 text-white w-14 h-14 rounded-full flex justify-center items-center transition-all duration-300 transform hover:scale-110"
+                        >
+                          <RiExternalLinkFill className="text-xl" />
+                        </Link>
+                      )}
+                      <Link
+                        target="_blank"
+                        href={project.github}
+                        aria-label="Ver código"
+                        className="bg-secondary hover:bg-secondary/80 text-white w-14 h-14 rounded-full flex justify-center items-center transition-all duration-300 transform hover:scale-110"
+                      >
+                        <RiGithubFill className="text-xl" />
+                      </Link>
+                    </div>
+                  </div>
+                </CardHeader>
+              </Card>
+            </motion.div>
+
+            {/* Project Details Grid */}
+            <div className="grid lg:grid-cols-2 gap-8 mb-12">
+              {/* About Section */}
+              <motion.div variants={fadeIn("right", 0.6)}>
+                <Card className="h-full">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <RiCodeSSlashLine className="text-2xl text-accent" />
+                      <h3 className="text-xl font-semibold">Description</h3>
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {project.longDescription}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Technologies */}
+              <motion.div variants={fadeIn("left", 0.6)}>
+                <Card className="h-full">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <RiStackLine className="text-2xl text-accent" />
+                      <h3 className="text-xl font-semibold">Technology stack</h3>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {project.technologies.map((tech, index) => (
+                        <Badge 
+                          key={index} 
+                          variant="secondary"
+                          className="text-sm py-1 px-3 bg-white text-black border border-gray-300 hover:bg-gray-100"
+                        >
+                          {tech}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+
+            {/* Features and Challenges */}
+            <div className="grid lg:grid-cols-3 gap-8">
+              {/* Features */}
+              <motion.div variants={fadeIn("up", 0.8)}>
+                <Card className="h-full">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <RiLightbulbLine className="text-2xl text-accent" />
+                      <h3 className="text-xl font-semibold">functionalities</h3>
+                    </div>
+                    <ul className="space-y-2">
+                      {project.features.map((feature, index) => (
+                        <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                          <span className="w-1.5 h-1.5 bg-accent rounded-full"></span>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Challenges */}
+              <motion.div variants={fadeIn("up", 1.0)}>
+                <Card className="h-full">
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-semibold mb-4">Challenges</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {project.challenges}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Learnings */}
+              <motion.div variants={fadeIn("up", 1.2)}>
+                <Card className="h-full">
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-semibold mb-4">Learnings</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {project.learnings}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+
+            {/* Action Buttons */}
+            <motion.div 
+              variants={fadeIn("up", 1.4)}
+              className="flex justify-center gap-6 mt-12 pb-8"
+            >
+              {project.link && (
+                <Link
+                  target="_blank"
+                  href={project.link}
+                  className="flex items-center gap-3 bg-accent hover:bg-accent/80 text-white px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105"
+                >
+                  <RiExternalLinkFill className="text-xl" />
+                  Ver Projeto
+                </Link>
+              )}
+              <Link
+                target="_blank"
+                href={project.github}
+                className="flex items-center gap-3 bg-secondary hover:bg-secondary/80 text-white px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105"
+              >
+                <RiGithubFill className="text-xl" />
+                View Git Repo
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = projectData.map((project) => ({
+    params: { id: project.id },
+  }));
+
+  return { paths, fallback: false };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const project = projectData.find((project) => project.id === params?.id);
+
+  if (!project) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      project,
+    },
+  };
+};
+
+export default ProjectDetail;

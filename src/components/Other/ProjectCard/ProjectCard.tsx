@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import {
   RiGithubFill,
   RiExternalLinkFill
@@ -12,45 +13,31 @@ import { ProjectCardInterface } from "@/interfaces/ProjectInterface";
 
 const ProjectCard = ({ project, specialStyle, id }: ProjectCardInterface) => {
   const cardClass = specialStyle ? "min-description-height" : "";
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    // Navigate to project detail page
+    router.push(`/projects/${project.id}`);
+  };
 
   return (
-    <Card id={id} className="group overflow-hidden relative">
+    <Card 
+      id={id} 
+      className="group overflow-hidden relative cursor-pointer hover:shadow-2xl transition-all duration-300"
+      onClick={handleCardClick}
+    >
       <CardHeader className="p-0">
         <div
           className="relative w-full h-72
            flex items-center justify-center bg-secondary/40 bg-work_project_bg xl:bg-no-repeat overflow-hidden xl:bg-contain"
         >
           <Image
-            className="absolute shadow-2xl translate-y-1/2 -translate-x-1/2 top-0 left-1/2"
+            className="absolute shadow-2xl translate-y-1/2 -translate-x-1/2 top-0 left-1/2 transition-transform duration-300 group-hover:scale-105"
             src={project.image}
             width={300}
             height={300}
             alt="Project Image"
           />
-          <div className="flex gap-x-4">
-            {project.link && <Link
-              target="_blank"
-              href={project.link}
-              aria-label={"deploy"}
-              className="bg-secondary w-[54px] h[54px]
-              rounded-[4px] flex justify-center scale-0 py-2
-                  opacity-0 group-hover:scale-100 group-hover:opacity-100
-                  transition-all duration-200"
-            >
-              <RiExternalLinkFill className="text-white" />
-            </Link>}
-            <Link
-              target="_blank"
-              href={project.github}
-              aria-label={"github"}
-              className="bg-secondary w-[54px] h[54px]
-              rounded-[4px] flex justify-center scale-0 py-2
-                  opacity-0 group-hover:scale-100 group-hover:opacity-100
-                  transition-all duration-200"
-            >
-              <RiGithubFill className="text-white" />
-            </Link>
-          </div>
         </div>
       </CardHeader>
       <div className="h-64 px-8 py-6">
@@ -68,6 +55,9 @@ const ProjectCard = ({ project, specialStyle, id }: ProjectCardInterface) => {
         >
           {project.description}
         </p>
+        <div className="mt-4 text-accent text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          Ver detalhes →
+        </div>
       </div>
     </Card>
   );
