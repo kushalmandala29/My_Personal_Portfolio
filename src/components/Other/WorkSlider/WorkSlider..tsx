@@ -34,7 +34,7 @@ const WorkSlider = () => {
                         <div className="flex items-center gap-x-2 text-[13px] tracking-[0.2em]">
                           <div className="delay-100">VER</div>
                           <div className="translate-y-[500%] group-hover:translate-y-0 transition-all duration-300 delay-150">
-                            PROJETO
+                            PROJECT
                           </div>
                           <div className="text-xl translate-y-[500%] group-hover:translate-y-0 transition-all duration-300 delay-200">
                             <RiArrowRightLine />

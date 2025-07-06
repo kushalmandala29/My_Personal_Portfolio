@@ -1,7 +1,7 @@
 export const projectData = [
   {
     id: "ToxiTrack – Serverless Telegram Moderator",
-    image: "/portfolio-purple.webp",
+    image: "/toxitrack.png",
     category: "front end",
     name: "🛡️ ToxiTrack – Serverless Telegram Moderator",
     description: "ToxiTrack is a fully serverless Telegram moderation bot that automatically detects and flags toxic messages in group and private chats using AWS services and the Telegram Bot API.",
@@ -15,7 +15,7 @@ export const projectData = [
   },
   {
     id: "Student Assistant System",
-    image: "/yrprey.webp",
+    image: "/student_assistence_system.png",
     category: "front end",
     name: "Student Assistant System",
     description: "Student Assistant System is an AI-powered Retrieval-Augmented Generation (RAG) chatbot that helps students find information about colleges, courses, programs, and fee structures through a conversational interface.",
@@ -43,7 +43,7 @@ export const projectData = [
   },
   {
     id: "Employment Leave Management System",
-    image: "/dogma.webp",
+    image: "/employee_leave_management_system.png",
     category: "front end",
     name: "Employment Leave Management System",
     description: "Employment Leave Management System is a Django-based web application designed to streamline employee leave requests and approvals, providing an intuitive interface for employees, managers, and HR administrators to manage leave workflows effectively.",
@@ -57,7 +57,7 @@ export const projectData = [
   },
   {
     id: "Music Recommendation System",
-    image: "/portfolio-blue.webp",
+    image: "/music_recommdationsystem.png",
     category: "front end",
     name: "Music Recommendation System",
     description: "Music Recommendation System is a text-based recommendation engine that analyzes song lyrics or descriptions to group similar songs and suggest personalized recommendations, leveraging text processing and unsupervised learning techniques.",
@@ -71,7 +71,7 @@ export const projectData = [
   },
   {
     id: "Dog Breed Classification",
-    image: "/portfolio-blue.webp",
+    image: "/dog_classification.png",
     category: "front end",
     name: "Dog Breed Classification",
     description: "Dog Breed Classification Project is a deep learning-based system capable of accurately identifying 120 different dog breeds with 92% accuracy, featuring a user-friendly web interface for instant breed predictions from uploaded images.",

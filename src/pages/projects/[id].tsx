@@ -51,7 +51,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
   return (
     <>
       <Seo
-        title={`${project.name} • Vagner Mengali • Portfólio`}
+        title={`${project.name} • Kushal Mandala• Portfólio`}
         description={project.description}
       />
       
@@ -66,21 +66,6 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
             exit="hidden"
             className="w-full"
           >
-            {/* Header with back button */}
-            <div className="flex items-center justify-between mb-8">
-              <Link 
-                href="/projects"
-                className="flex items-center gap-2 text-accent hover:text-white transition-colors duration-300"
-              >
-                <RiArrowLeftLine className="text-xl" />
-                <span>Voltar aos Projetos</span>
-              </Link>
-              
-              <Badge className="uppercase text-sm font-medium">
-                {project.category}
-              </Badge>
-            </div>
-
             {/* Project Header */}
             <motion.div
               variants={fadeIn("up", 0.2)}

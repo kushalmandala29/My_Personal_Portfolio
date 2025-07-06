@@ -37,30 +37,52 @@ const Contact = () => {
     const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY;
 
     if (!serviceId || !templateId || !publicKey) {
-      throw new Error("Variáveis de ambiente não estão definidas corretamente.");
+      throw new Error("Environment variables are not defined correctly.");
     }
 
     emailjs
       .send(serviceId.toString(), templateId.toString(), templateParams, publicKey.toString())
       .then(
         (response) => {
+          console.log('Email sent successfully:', response);
           reset();
           Swal.fire({
             position: "center",
             icon: "success",
-            title: "Sua mensagem foi enviada com sucesso! Obrigado",
-            showConfirmButton: false,
-            width: 600,
-            padding: "3em",
+            title: "Email sent successfully!",
+            text: "Thank you for contacting me. I'll get back to you soon!",
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#e74c3c",
+            width: 500,
+            padding: "2em",
             color: "#fff",
-            background: "#0b0d0e",
-            backdrop: "rgba(0,0,0,0.4)",
-            timer: 1500
+            background: "#1a1a1a",
+            backdrop: "rgba(0,0,0,0.8)",
+            timer: 4000,
+            timerProgressBar: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false
+          }).then(() => {
+            router.push('/');
           });
-          router.push('/');
         },
         (err) => {
-          err
+          console.error('Email send failed:', err);
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Oops! Something went wrong",
+            text: "Failed to send email. Please try again or contact me directly.",
+            showConfirmButton: true,
+            confirmButtonText: "Try Again",
+            confirmButtonColor: "#e74c3c",
+            width: 500,
+            padding: "2em",
+            color: "#fff",
+            background: "#1a1a1a",
+            backdrop: "rgba(0,0,0,0.8)"
+          });
         }
       );
   };
@@ -76,7 +98,7 @@ const Contact = () => {
                 <h2
                   className="h2 text-center xl:mb-12 mb-6"
                 >
-                  Vamos <span className="text-accent">conversar.</span>
+                  Let's <span className="text-accent">talk.</span>
                 </h2>
                 <motion.form
                   variants={fadeIn("up", 0.4)}
@@ -93,7 +115,7 @@ const Contact = () => {
                       render={({ field }) => (
                         <input
                           type="text"
-                          placeholder="Nome"
+                          placeholder="Name"
                           className={errors.name ? "input border-red/20" : "input"}
                           {...field}
                         />
@@ -118,7 +140,7 @@ const Contact = () => {
                     render={({ field }) => (
                       <input
                         type="text"
-                        placeholder="Assunto"
+                        placeholder="Subject"
                         className={errors.subject ? "input border-red/20" : "input"}
                         {...field}
                       />
@@ -130,7 +152,7 @@ const Contact = () => {
                     render={({ field }) => (
                       <textarea
                         className={errors.message ? "textarea border-red/20" : "textarea"}
-                        placeholder="Mensagem"
+                        placeholder="Message"
                         cols={30}
                         rows={10}
                         {...field}
@@ -142,7 +164,7 @@ const Contact = () => {
                     className="bg-white/10 backdrop-blur-sm btn rounded-full border border-white/50 max-w-[170px] px-8 transition-all duration-300 flex items-center justify-center overflow-hidden hover:border-accent group"
                   >
                     <span className="transition-all duration-300">
-                      Enviar
+                      Send
                     </span>
                   </button>
                 </motion.form>

@@ -28,36 +28,26 @@ const ProjectCard = ({ project, specialStyle, id }: ProjectCardInterface) => {
     >
       <CardHeader className="p-0">
         <div
-          className="relative w-full h-72
-           flex items-center justify-center bg-secondary/40 bg-work_project_bg xl:bg-no-repeat overflow-hidden xl:bg-contain"
+          className="relative w-full h-72 flex items-center justify-center bg-gradient-to-br from-secondary/20 to-secondary/40 overflow-hidden"
         >
           <Image
-            className="absolute shadow-2xl translate-y-1/2 -translate-x-1/2 top-0 left-1/2 transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             src={project.image}
-            width={300}
-            height={300}
+            width={1024}
+            height={1056}
             alt="Project Image"
           />
         </div>
       </CardHeader>
-      <div className="h-64 px-8 py-6">
-        <Badge
-          className="uppercase
-                text-sm font-medium mb-2 absolute top-4
-                left-5"
-        >
-          {project.category}
-        </Badge>
-        <p className="h4 mb-1">{project.name}</p>
+      <div className="h-64 px-8 py-6 bg-black text-white">
+        <p className="h4 mb-1 text-white">{project.name}</p>
         <p
-          className={`text-muted-foreground
+          className={`text-gray-300
                 text-lg  ${cardClass}`}
         >
           {project.description}
         </p>
-        <div className="mt-4 text-accent text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          Ver detalhes →
-        </div>
+        
       </div>
     </Card>
   );
