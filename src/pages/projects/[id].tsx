@@ -51,7 +51,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
   return (
     <>
       <Seo
-        title={`${project.name} • Kushal Mandala• Portfólio`}
+        title={`${project.name} • Kushal Mandala • Portfolio`}
         description={project.description}
       />
       
@@ -110,7 +110,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
                         <Link
                           target="_blank"
                           href={project.link}
-                          aria-label="Ver projeto"
+                          aria-label="View project"
                           className="bg-accent hover:bg-accent/80 text-white w-14 h-14 rounded-full flex justify-center items-center transition-all duration-300 transform hover:scale-110"
                         >
                           <RiExternalLinkFill className="text-xl" />
@@ -119,7 +119,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
                       <Link
                         target="_blank"
                         href={project.github}
-                        aria-label="Ver código"
+                        aria-label="View code"
                         className="bg-secondary hover:bg-secondary/80 text-white w-14 h-14 rounded-full flex justify-center items-center transition-all duration-300 transform hover:scale-110"
                       >
                         <RiGithubFill className="text-xl" />
@@ -179,7 +179,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <RiLightbulbLine className="text-2xl text-accent" />
-                      <h3 className="text-xl font-semibold">functionalities</h3>
+                      <h3 className="text-xl font-semibold">Features</h3>
                     </div>
                     <ul className="space-y-2">
                       {project.features.map((feature, index) => (
@@ -230,7 +230,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
                   className="flex items-center gap-3 bg-accent hover:bg-accent/80 text-white px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105"
                 >
                   <RiExternalLinkFill className="text-xl" />
-                  Ver Projeto
+                  View Project
                 </Link>
               )}
               <Link

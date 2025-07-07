@@ -23,12 +23,12 @@ import {
 export const aboutData = [
     {
         id: "about",
-        title: "Sobre mim",
+        title: "About me",
         info: [
             {
                 id: "about1",
                 title: "",
-                stage: "Ingressei na carreira de TI por interesse em jogos, comecei a modificar códigos para melhorar jogos e, gradualmente, estudei por conta própria. Trabalhei meio período na Fixtoxs como desenvolvedor front-end, evoluindo para full stack. Após um curso em tempo integral, fui monitor na Kenzie Academy e, agora, sou desenvolvedor front-end na Wicomm, além de fazer projetos freelance como full stack.",
+                stage: "I entered the IT career out of interest in games, started modifying codes to improve games and gradually studied on my own. I worked part-time at Fixtoxs as a front-end developer, evolving to full stack. After a full-time course, I was a monitor at Kenzie Academy and now I'm a front-end developer at Wicomm, in addition to doing freelance projects as full stack.",
                 key: "about1",
             }
         ],
@@ -39,7 +39,7 @@ export const aboutData = [
         info: [
             {
                 id: "web-development",
-                title: "Desenvolvimento Web  ",
+                title: "Web Development",
                 icons: [
                     "HTML",
                     "CSS",

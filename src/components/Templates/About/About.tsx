@@ -39,10 +39,17 @@ const About = () => {
             className="h2 z-10">
             My <span className="text-accent">Journey</span> in Development
           </h2>
-          <p
-            className="hidden xl:flex max-w-[500px] mx-auto xl:mx-0 mb-6 xl:mb-12 px-2 xl:px-0 z-10">
-            Ingressei na carreira de TI por interesse em jogos, comecei a modificar códigos para melhorar jogos e, gradualmente, estudei por conta própria. Trabalhei meio período na Fixtoxs como desenvolvedor front-end, evoluindo para full stack. Após um curso em tempo integral, fui monitor na Kenzie Academy e, agora, sou desenvolvedor front-end na Wicomm, além de fazer projetos freelance como full stack.
-          </p>
+          <div className="hidden xl:flex flex-col max-w-[500px] mx-auto xl:mx-0 mb-6 xl:mb-12 px-2 xl:px-0 z-10 space-y-4">
+            <p>
+              I'm Kushal, a final-year B.Tech student specializing in Artificial Intelligence & Data Science with a focus on Cloud and Edge Computing at KL University. Passionate about building innovative, real-world AI solutions, I have hands-on experience in Python, Django, RESTful APIs, and integrating large language models (LLMs) into production systems.
+            </p>
+            <p>
+              In my free time, I love listening to music and playing basketball, which help me stay creative, energized, and balanced.
+            </p>
+            <p>
+              Looking ahead, I'm excited to pursue roles in software engineering, DevOps, cloud engineering, data science, and AI/ML development, where I can apply my skills to build innovative, scalable, and intelligent solutions.
+            </p>
+          </div>
         </div>
         <motion.div
           variants={fadeIn("left", 0.4)}

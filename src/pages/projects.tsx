@@ -5,8 +5,8 @@ const ProjectsPage = () => {
   return (
     <>
       <Seo
-        title="Projetos • Vagner Mengali • Portfóli"
-        description="Explore uma galeria de projetos inspiradores e inovadores. Cada projeto é uma demonstração do meu compromisso com a excelência técnica e a entrega de soluções sob medida para os clientes."
+        title="Projects • Kushal Mandala • Portfolio"
+        description="Explore a gallery of inspiring and innovative projects. Each project is a demonstration of my commitment to technical excellence and delivering tailored solutions for clients."
       />
       <Projects />
     </>

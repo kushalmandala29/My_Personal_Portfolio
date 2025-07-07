@@ -5,8 +5,8 @@ const ContactPage = () => {
   return (
     <>
       <Seo
-        title="Contato • Vagner Mengali • Portfólio"
-        description="Pronto para iniciar uma conversa sobre seu próximo projeto? Entre em contato comigo aqui. Estou ansioso para discutir suas ideias e como posso ajudá-lo a alcançar seus objetivos de desenvolvimento de software."
+        title="Contact • Kushal Mandala • Portfolio"
+        description="Ready to start a conversation about your next project? Get in touch with me here. I'm excited to discuss your ideas and how I can help you achieve your software development goals."
       />
       <Contact />
     </>

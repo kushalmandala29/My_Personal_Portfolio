@@ -5,8 +5,8 @@ const AboutPage = () => {
   return (
     <>
       <Seo
-        title="Sobre mim • Vagner Mengali • Portfólio"
-        description="Conheça a história por trás do desenvolvedor. Nesta seção, compartilho minha paixão pela tecnologia, minha jornada profissional e os valores que guiam meu trabalho."
+        title=""
+        description="Get to know the story behind the developer. In this section, I share my passion for technology, my professional journey and the values that guide my work."
       />
       <About />
     </>

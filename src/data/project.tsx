@@ -29,7 +29,7 @@ export const projectData = [
   },
   {
     id: "Interactive_Projectile_Motion_Simulation_accross_planets",
-    image: "/portfolio-green.webp",
+    image: "/projectile_motion.png",
     category: "front end",
     name: "Interactive_Projectile_Motion_Simulation_accross_planets",
     description: "Interactive_Projectile_Motion_Simulation_accross_planets is an interactive web-based simulation that visualizes how projectiles behave under different planetary gravities, allowing users to explore the effects of varying gravity on projectile trajectories across the Solar System.",
