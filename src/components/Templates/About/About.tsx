@@ -23,7 +23,7 @@ const About = () => {
   }, []);
 
   return (
-    <div className="h-[inherit] xl:py-32 pt-20 xl:mb-0 xl:my-0 text-center xl:text-left max-h-dvh">
+    <div className="min-h-screen xl:py-32 pt-20 xl:mb-0 xl:my-0 text-center xl:text-left">
       <motion.div
         variants={fadeIn("right", 0.2)}
         initial="hidden"
@@ -33,7 +33,7 @@ const About = () => {
       >
         <Avatar opacity={true} />
       </motion.div>
-      <div className="container mx-auto h-full flex flex-col items-center xl:flex-row gap-x-6">
+      <div className="container mx-auto flex flex-col items-center xl:flex-row gap-x-6 gap-y-8">
         <div className="flex-1 flex flex-col justify-center">
           <h2
             className="h2 z-10">
@@ -56,62 +56,71 @@ const About = () => {
           initial="hidden"
           animate="show"
           exit="hidden"
-          className="flex flex-col w-full xl:max-w-[48%] h-[480px]">
-          <div className="flex gap-4 xl:gap-x-8 mx-auto xl:mx-0 mb-4">
-            {aboutData.map((item: AboutData, itemIndex: number) => {
-              const isActive = index === itemIndex;
-              const isFirstTab = itemIndex === 0;
-              
-              return (
-                <div
-                  key={`about-${itemIndex}`}
-                  className={`
-                    ${isActive ? "text-accent after:w-[100%] after:bg-accent" : "text-white/60 after:w-8 after:bg-white"}
-                    ${isFirstTab ? "xl:hidden" : ""}
-                    cursor-pointer capitalize xl:text-lg relative 
-                    after:h-[2px] after:absolute after:-bottom-1 after:left-0 
-                    after:transition-all after:duration-300
-                    text-[15px] hover:text-accent transition-all duration-300
-                  `}
-                  onClick={() => {
-                    setIndex(itemIndex);
-                  }}
-                >
-                  {item.title}
-                </div>
-              );
-            })}
+          className="flex flex-col w-full xl:max-w-[48%]">
+          <div className="overflow-x-auto scrollbar-none mb-4">
+            <div className="flex gap-4 xl:gap-x-8 mx-auto xl:mx-0 min-w-max px-2 xl:px-0">
+              {aboutData.map((item: AboutData, itemIndex: number) => {
+                const isActive = index === itemIndex;
+                const isFirstTab = itemIndex === 0;
+                
+                return (
+                  <div
+                    key={`about-${itemIndex}`}
+                    className={`
+                      ${isActive ? "text-accent after:w-[100%] after:bg-accent" : "text-white/60 after:w-8 after:bg-white"}
+                      ${isFirstTab ? "xl:hidden" : ""}
+                      cursor-pointer capitalize xl:text-lg relative 
+                      after:h-[2px] after:absolute after:-bottom-1 after:left-0 
+                      after:transition-all after:duration-300
+                      text-[15px] hover:text-accent transition-all duration-300
+                      whitespace-nowrap flex-shrink-0
+                    `}
+                    onClick={() => {
+                      setIndex(itemIndex);
+                    }}
+                  >
+                    {item.title}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className="py-2 xl:py-6 flex flex-col gap-y-2 xl:gap-y-4 items-center xl:items-start scrollbar-none md:max-h-40 max-h-80 xl:overflow-hidden overflow-y-scroll xl:max-h-full">
-            {aboutData[index].info.map((item: AboutInfo, itemIndex: number) => (
-              <div key={`info-${itemIndex}`} className="flex-1 flex flex-col max-w-max gap-2 items-center text-white/60 xl:items-start">
-                <div key={`title-stage-${itemIndex}`} className={`font-light mb-2 md:mb-0 whitespace-nowrap flex items-center gap-3 ${item.title ? "" : "hidden"}`}>
-                  <span className="text-white">{item.title}</span>
-                  {item.stage && <span className="text-accent">- {item.stage}</span>}
-                </div>
-                {item.course && (
-                  <div key={`course-${itemIndex}`} className="text-sm text-white/80 font-medium">
-                    {item.course}
-                  </div>
-                )}
-                {item.grade && (
-                  <div key={`grade-${itemIndex}`} className="text-sm text-accent">
-                    {item.grade}
-                  </div>
-                )}
-                {!item.course && !item.grade && item.stage && (
-                  <div key={`stage-${itemIndex}`}>{item.stage}</div>
-                )}
-                <div key={`hidden-${itemIndex}`} className="hidden md:flex"></div>
-                <div key={`icons-${itemIndex}`} className="flex gap-4 flex-wrap xl:justify-start justify-center xl xl:px-0 px-5 xl:max-w-[500px]">
-                  {item.icons?.map((icon, iconIndex) => (
-                    <div key={`icon-${itemIndex}-${iconIndex}`} className="text-2xl text-white/90">
-                      <Icon className="" width={24} height={24} id={icon} />
+          <div className="w-full">
+            <div className="py-2 xl:py-6 flex flex-col gap-y-2 xl:gap-y-4 items-center xl:items-start">
+              {aboutData.map((tabItem: AboutData, tabIndex: number) => (
+                <div key={`tab-${tabIndex}`} className={`w-full ${index === tabIndex ? 'block' : 'hidden'}`}>
+                  {tabItem.info.map((item: AboutInfo, itemIndex: number) => (
+                    <div key={`info-${tabIndex}-${itemIndex}`} className="flex-1 flex flex-col max-w-max gap-2 items-center text-white/60 xl:items-start mb-6">
+                      <div key={`title-stage-${tabIndex}-${itemIndex}`} className={`font-light mb-2 md:mb-0 whitespace-nowrap flex items-center gap-3 ${item.title ? "" : "hidden"}`}>
+                        <span className="text-white">{item.title}</span>
+                        {item.stage && <span className="text-accent">- {item.stage}</span>}
+                      </div>
+                      {item.course && (
+                        <div key={`course-${tabIndex}-${itemIndex}`} className="text-sm text-white/80 font-medium">
+                          {item.course}
+                        </div>
+                      )}
+                      {item.grade && (
+                        <div key={`grade-${tabIndex}-${itemIndex}`} className="text-sm text-accent">
+                          {item.grade}
+                        </div>
+                      )}
+                      {!item.course && !item.grade && item.stage && (
+                        <div key={`stage-${tabIndex}-${itemIndex}`}>{item.stage}</div>
+                      )}
+                      <div key={`hidden-${tabIndex}-${itemIndex}`} className="hidden md:flex"></div>
+                      <div key={`icons-${tabIndex}-${itemIndex}`} className="flex gap-4 flex-wrap xl:justify-start justify-center xl xl:px-0 px-5 xl:max-w-[500px]">
+                        {item.icons?.map((icon, iconIndex) => (
+                          <div key={`icon-${tabIndex}-${itemIndex}-${iconIndex}`} className="text-2xl text-white/90">
+                            <Icon className="" width={24} height={24} id={icon} />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>

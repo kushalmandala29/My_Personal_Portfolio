@@ -8,17 +8,17 @@ import { projectData } from "@/data/project";
 
 const Projects = () => {
   return (
-    <div className="xl:h-[inherit] h-auto xl:pt-[3%] xl:py-24 pt-12 pb-14 xl:pb-0 xl:mt-0 flex items-start max-h-dvh relative overflow-hidden">
-      <div className="container mx-auto relative z-10 w-full max-h-[90vh] overflow-y-auto scrollbar-custom">
+    <div className="h-full w-full flex items-start justify-center relative overflow-hidden">
+      <div className="container mx-auto relative z-10 w-full h-full flex flex-col pt-8 xl:pt-16 px-4 xl:px-0">
         <motion.div
           variants={fadeIn("down", 0.6)}
           initial="hidden"
           animate="show"
           exit="hidden"
-          className="w-full"
+          className="w-full h-full flex flex-col"
         >
           <motion.h2 
-            className="h2 text-center mb-12 relative"
+            className="h2 text-center mb-6 xl:mb-8 relative flex-shrink-0"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
@@ -33,7 +33,7 @@ const Projects = () => {
           </motion.h2>
           
           <motion.div 
-            className="text-lg xl:mt-8 relative"
+            className="text-lg flex-1 overflow-y-auto scrollbar-none projects-scroll-container"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}

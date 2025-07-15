@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Full Page Scroll Styles */
+html, body {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+#__next {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

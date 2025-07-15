@@ -2,6 +2,7 @@ import { Jost } from 'next/font/google'
 
 import Nav from '@/components/Other/Nav/Nav'
 import Header from '@/components/Other/Header/Header'
+import FullPageScroll from '@/components/Other/FullPageScroll/FullPageScroll'
 
 import { ChildrenInterface } from '@/interfaces/ChildrenInterface';
 
@@ -19,7 +20,7 @@ const Layout = ({ children }: ChildrenInterface) => {
       <div className={`page bg-cube text-white relative h-screen`}>
         <Nav />
         <Header />
-        {children}
+        <FullPageScroll />
       </div>
     </div>
   );
