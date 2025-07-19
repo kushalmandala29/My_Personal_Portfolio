@@ -4,12 +4,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import Home from '@/components/Templates/Home/Home';
 import About from '@/components/Templates/About/About';
+import Skills from '@/components/Templates/Skills/Skills';
+import Certifications from '@/components/Templates/Certifications/Certifications';
 import Projects from '@/components/Templates/Projects/Projects';
 import Contact from '@/components/Templates/Contact/Contact';
 
 const pages = [
   { component: Home, route: '/', name: 'Home' },
   { component: About, route: '/about', name: 'About' },
+  { component: Skills, route: '/skills', name: 'Skills' },
+  { component: Certifications, route: '/certifications', name: 'Certifications' },
   { component: Projects, route: '/projects', name: 'Projects' },
   { component: Contact, route: '/contact', name: 'Contact' }
 ];
