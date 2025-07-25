@@ -6,6 +6,28 @@ import { navData } from "@/data/nav"
 const Nav = () => {
   const router = useRouter();
   const pathname = router.pathname;
+  const asPath = router.asPath;
+
+  // Function to check if a nav item is active
+  const isActive = (linkPath: string) => {
+    // Special handling for About tab - it should be active when on /about#top or plain /about
+    if (linkPath === '/about#top') {
+      return asPath === '/about#top' || (pathname === '/about' && !asPath.includes('#projects'));
+    }
+    
+    // Special handling to prevent About from being active when on projects section
+    if (linkPath === '/about' && asPath.includes('#projects')) {
+      return false;
+    }
+    
+    // For hash-based links like /about#projects
+    if (linkPath.includes('#')) {
+      return asPath === linkPath;
+    }
+    
+    // For regular paths
+    return linkPath === pathname;
+  };
 
   return (
     <nav className="flex flex-col items-center justify-center gap-y-4 fixed h-fit bottom-0 mt-auto xl:right-[2%] z-50 top-0 w-full xl:w-16 xl:max-w-md xl:h-screen">
@@ -13,7 +35,7 @@ const Nav = () => {
         {navData.map((link, index) => {
           return (
             <Link
-              className={`${link.path === pathname && "text-accent"
+              className={`${isActive(link.path) && "text-accent"
                 } relative flex items-center group hover:text-accent transition-all duration-300 xl:w-fit w-6`}
               href={link.path}
               key={index}

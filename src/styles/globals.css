@@ -176,7 +176,7 @@ html, body {
 }
 
 .scrollbar-custom::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 .scrollbar-custom::-webkit-scrollbar-track {
@@ -185,12 +185,22 @@ html, body {
 
 .scrollbar-custom::-webkit-scrollbar-thumb {
   background-color: rgba(64, 226, 127, 0.3);
-  border-radius: 3px;
+  border-radius: 4px;
   transition: background-color 0.3s ease;
 }
 
 .scrollbar-custom::-webkit-scrollbar-thumb:hover {
   background-color: rgba(64, 226, 127, 0.5);
+}
+
+/* Smooth scrolling behavior */
+.scrollbar-custom {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced scrollbar for better visibility during scrolling */
+.scrollbar-custom::-webkit-scrollbar-thumb:active {
+  background-color: rgba(64, 226, 127, 0.7);
 }
 
 /* Hide scrollbar but keep functionality */
@@ -260,16 +270,66 @@ html, body {
   overflow: hidden;
 }
 
-/* Enhanced hover effects for skill badges */
-.skill-badge:hover {
-  transform: scale(1.1);
-  filter: brightness(1.15);
+/* Skill badge image styling */
+.skill-badge-image {
+  transition: all 0.3s ease;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.skill-badge-image:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* Certificate card hover effects */
 .cert-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Certificate card with background image */
+.cert-card-bg {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cert-card-bg:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(64, 226, 127, 0.2);
+}
+
+.cert-card-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(64, 226, 127, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.cert-card-bg:hover::before {
+  opacity: 1;
+}
+
+/* Skills badge styling for certificates */
+.cert-skill-badge {
+  background: rgba(64, 226, 127, 0.1);
+  color: rgb(64, 226, 127);
+  border: 1px solid rgba(64, 226, 127, 0.3);
+  transition: all 0.2s ease;
+}
+
+.cert-skill-badge:hover {
+  background: rgba(64, 226, 127, 0.2);
+  border-color: rgba(64, 226, 127, 0.5);
 }
 
 /* Fade in animation for tab content */
@@ -302,16 +362,64 @@ html, body {
   transform: translateY(-2px);
 }
 
-/* Skills and certifications grid responsive adjustments */
-.skills-certifications-grid {
+/* Unified scrolling experience */
+.about-scroll-container {
+  height: 100vh;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* Content spacing for better scroll flow */
+.about-content-spacing {
+  padding-bottom: 2rem;
+}
+
+/* Tab content transitions */
+.tab-content-transition {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Enhanced mobile scrolling */
+@media (max-width: 768px) {
+  .about-scroll-container {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .about-content-spacing {
+    padding-bottom: 4rem;
+  }
+}
+
+/* Certifications grid responsive adjustments */
+.certifications-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* Enhanced responsive grid for certifications */
+.certifications-grid-responsive {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 @media (max-width: 768px) {
-  .skills-certifications-grid {
+  .certifications-grid,
+  .certifications-grid-responsive {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .certifications-grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1025px) {
+  .certifications-grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -319,22 +427,6 @@ html, body {
 .backdrop-blur-enhanced {
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
-}
-
-/* Skill category animation */
-.skill-category {
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* Certificate image styling */
@@ -370,30 +462,18 @@ html, body {
 
 /* Responsive grid adjustments */
 @media (max-width: 768px) {
-  .skills-grid {
-    grid-template-columns: 1fr;
-  }
-  
   .certifications-grid {
     grid-template-columns: 1fr;
   }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
-  .skills-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
   .certifications-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (min-width: 1025px) {
-  .skills-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  
   .certifications-grid {
     grid-template-columns: repeat(3, 1fr);
   }

@@ -4,17 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import Home from '@/components/Templates/Home/Home';
 import About from '@/components/Templates/About/About';
-import Skills from '@/components/Templates/Skills/Skills';
-import Certifications from '@/components/Templates/Certifications/Certifications';
-import Projects from '@/components/Templates/Projects/Projects';
 import Contact from '@/components/Templates/Contact/Contact';
 
 const pages = [
   { component: Home, route: '/', name: 'Home' },
   { component: About, route: '/about', name: 'About' },
-  { component: Skills, route: '/skills', name: 'Skills' },
-  { component: Certifications, route: '/certifications', name: 'Certifications' },
-  { component: Projects, route: '/projects', name: 'Projects' },
   { component: Contact, route: '/contact', name: 'Contact' }
 ];
 
@@ -26,32 +20,42 @@ const FullPageScroll = () => {
 
   // Initialize current page based on route
   useEffect(() => {
+    // Handle special cases for about page with hash
+    if (router.asPath === '/about#projects' || router.asPath === '/about#top' || router.pathname === '/about') {
+      setCurrentPage(1); // About page index
+      return;
+    }
+    
+    // Handle project detail pages - don't interfere with them
+    if (router.pathname.startsWith('/projects/')) {
+      return; // Don't set currentPage for project detail pages
+    }
+    
     const currentIndex = pages.findIndex(page => page.route === router.pathname);
     if (currentIndex !== -1) {
       setCurrentPage(currentIndex);
     }
-  }, [router.pathname]);
+  }, [router.pathname, router.asPath]);
 
   // Handle wheel scroll
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      // Check if the scroll is happening within the projects grid area
-      const target = e.target as HTMLElement;
-      const projectsGrid = document.querySelector('.grid.grid-cols-1.lg\\:grid-cols-3.gap-6.pb-8');
-      const projectsScrollContainer = document.querySelector('.projects-scroll-container');
-      
-      // If scrolling within projects grid or its scroll container, allow normal scrolling
-      if (projectsGrid && (projectsGrid.contains(target) || projectsScrollContainer?.contains(target))) {
-        return; // Let the normal scroll happen
+      // Don't handle wheel events on project detail pages
+      if (router.pathname.startsWith('/projects/')) {
+        return;
       }
       
-      // If scrolling within projects scroll container and there's more content to scroll
-      if (projectsScrollContainer && projectsScrollContainer.contains(target)) {
-        const container = projectsScrollContainer as HTMLElement;
+      // Check if the scroll is happening within the About page scrollable content
+      const target = e.target as HTMLElement;
+      const aboutScrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
+      
+      // If scrolling within About page scroll container and there's more content to scroll
+      if (aboutScrollContainer && aboutScrollContainer.contains(target)) {
+        const container = aboutScrollContainer as HTMLElement;
         const canScrollDown = container.scrollTop < container.scrollHeight - container.clientHeight;
         const canScrollUp = container.scrollTop > 0;
         
-        // If can scroll within projects, don't trigger page navigation
+        // If can scroll within About page, don't trigger page navigation
         if ((e.deltaY > 0 && canScrollDown) || (e.deltaY < 0 && canScrollUp)) {
           return;
         }
@@ -87,6 +91,11 @@ const FullPageScroll = () => {
   // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't handle keyboard events on project detail pages
+      if (router.pathname.startsWith('/projects/')) {
+        return;
+      }
+      
       if (isScrolling) return;
       
       if ((e.key === 'ArrowDown' || e.key === 'PageDown') && currentPage < pages.length - 1) {
@@ -112,19 +121,30 @@ const FullPageScroll = () => {
 
   // Handle touch gestures for mobile
   useEffect(() => {
-    let touchStartY = 0;
-    
     const handleTouchStart = (e: TouchEvent) => {
+      // Don't handle touch events on project detail pages
+      if (router.pathname.startsWith('/projects/')) {
+        return;
+      }
       touchStartY = e.touches[0].clientY;
     };
     
     const handleTouchMove = (e: TouchEvent) => {
+      // Don't handle touch events on project detail pages
+      if (router.pathname.startsWith('/projects/')) {
+        return;
+      }
       if (Math.abs(e.touches[0].clientY - touchStartY) > 10) {
         e.preventDefault();
       }
     };
     
     const handleTouchEnd = (e: TouchEvent) => {
+      // Don't handle touch events on project detail pages
+      if (router.pathname.startsWith('/projects/')) {
+        return;
+      }
+      
       if (isScrolling) return;
       
       const touchEndY = e.changedTouches[0].clientY;
@@ -149,6 +169,8 @@ const FullPageScroll = () => {
       }
     };
 
+    let touchStartY = 0;
+
     document.addEventListener('touchstart', handleTouchStart, { passive: false });
     document.addEventListener('touchmove', handleTouchMove, { passive: false });
     document.addEventListener('touchend', handleTouchEnd, { passive: false });
@@ -160,7 +182,7 @@ const FullPageScroll = () => {
     };
   }, [currentPage, isScrolling, router]);
 
-  const CurrentComponent = pages[currentPage].component;
+  const CurrentComponent = pages[currentPage]?.component;
 
   return (
     <>
@@ -186,7 +208,7 @@ const FullPageScroll = () => {
             transition={{ duration: 0.6, ease: "easeInOut" }}
             className="h-full w-full"
           >
-            <CurrentComponent />
+            {CurrentComponent && <CurrentComponent />}
           </motion.div>
         </AnimatePresence>
       </div>

@@ -2,6 +2,7 @@ export interface ProjectCardInterface {
     id?: any;
     project: {
         id: string;
+        slug: string;
         image: string;
         category: string;
         name: string;
