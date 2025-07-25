@@ -1,28 +1,54 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
 import { navData } from "@/data/nav"
 
 const Nav = () => {
   const router = useRouter();
   const pathname = router.pathname;
-  const asPath = router.asPath;
+  const [currentPath, setCurrentPath] = useState(router.asPath);
+
+  // Listen for URL changes including those made by window.history.replaceState
+  useEffect(() => {
+    const handleUrlChange = () => {
+      setCurrentPath(window.location.pathname + window.location.hash);
+    };
+
+    // Listen for popstate events (back/forward browser buttons)
+    window.addEventListener('popstate', handleUrlChange);
+    
+    // Listen for custom urlchange events from About component
+    window.addEventListener('urlchange', handleUrlChange);
+    
+    // Listen for router changes (Next.js navigation)
+    router.events?.on('routeChangeComplete', handleUrlChange);
+
+    // Update current path when router.asPath changes
+    setCurrentPath(router.asPath);
+
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange);
+      window.removeEventListener('urlchange', handleUrlChange);
+      router.events?.off('routeChangeComplete', handleUrlChange);
+    };
+  }, [router.asPath, router.events]);
 
   // Function to check if a nav item is active
   const isActive = (linkPath: string) => {
     // Special handling for About tab - it should be active when on /about#top or plain /about
     if (linkPath === '/about#top') {
-      return asPath === '/about#top' || (pathname === '/about' && !asPath.includes('#projects'));
+      return currentPath === '/about#top' || (pathname === '/about' && !currentPath.includes('#projects'));
     }
     
     // Special handling to prevent About from being active when on projects section
-    if (linkPath === '/about' && asPath.includes('#projects')) {
+    if (linkPath === '/about' && currentPath.includes('#projects')) {
       return false;
     }
     
     // For hash-based links like /about#projects
     if (linkPath.includes('#')) {
-      return asPath === linkPath;
+      return currentPath === linkPath;
     }
     
     // For regular paths

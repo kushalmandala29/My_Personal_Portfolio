@@ -58,12 +58,18 @@ const About = () => {
         if (isProjectsInView && !router.asPath.includes('#projects')) {
           // Update URL to show projects hash
           window.history.replaceState(null, '', '/about#projects');
+          // Dispatch custom event to notify Nav component
+          window.dispatchEvent(new Event('urlchange'));
         } else if (!isProjectsInView && router.asPath.includes('#projects')) {
           // When scrolling away from projects, go back to top section
           window.history.replaceState(null, '', '/about#top');
+          // Dispatch custom event to notify Nav component
+          window.dispatchEvent(new Event('urlchange'));
         } else if (!router.asPath.includes('#') && scrollContainer.scrollTop < 100) {
           // When at the very top and no hash, set to top hash
           window.history.replaceState(null, '', '/about#top');
+          // Dispatch custom event to notify Nav component
+          window.dispatchEvent(new Event('urlchange'));
         }
       }
     };
@@ -123,88 +129,102 @@ const About = () => {
 
   const skillsData = [
     {
-      category: "Programming Languages",
+      category: "Programming & Scripting",
       items: [
         { name: "Python", badge: "https://img.shields.io/badge/Python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" },
+        { name: "C", badge: "https://img.shields.io/badge/C-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white" },
         { name: "JavaScript", badge: "https://img.shields.io/badge/JavaScript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" },
-        { name: "Java", badge: "https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white" },
-        { name: "C++", badge: "https://img.shields.io/badge/C++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white" },
-        { name: "R", badge: "https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white" },
-        { name: "PHP", badge: "https://img.shields.io/badge/PHP-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white" }
+        { name: "SQL", badge: "https://img.shields.io/badge/SQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" }
       ]
     },
     {
-      category: "AI/ML & Data Science",
+      category: "Web Development & API Design",
+      items: [
+        { name: "Django", badge: "https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" },
+        { name: "FastAPI", badge: "https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi&logoColor=white" },
+        { name: "RESTful APIs", badge: "https://img.shields.io/badge/REST-02569B?style=for-the-badge&logo=rest&logoColor=white" },
+        { name: "Postman", badge: "https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" }
+      ]
+    },
+    {
+      category: "Databases & Data Engineering",
+      items: [
+        { name: "PostgreSQL", badge: "https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" },
+        { name: "MySQL", badge: "https://img.shields.io/badge/MySQL-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white" },
+        { name: "Chroma (Vector DB)", badge: "https://img.shields.io/badge/Chroma-FF6B6B?style=for-the-badge&logo=database&logoColor=white" },
+        { name: "Apache Flink", badge: "https://img.shields.io/badge/Apache%20Flink-E6526F?style=for-the-badge&logo=apache-flink&logoColor=white" },
+        { name: "Apache Airflow", badge: "https://img.shields.io/badge/Apache%20Airflow-017CEE?style=for-the-badge&logo=apache-airflow&logoColor=white" }
+      ]
+    },
+    {
+      category: "Cloud & DevOps",
+      items: [
+        { name: "AWS", badge: "https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white" },
+        { name: "Google Cloud Platform", badge: "https://img.shields.io/badge/GCP-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white" },
+        { name: "Git", badge: "https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" },
+        { name: "GitHub", badge: "https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" },
+        { name: "Docker", badge: "https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" },
+        { name: "CI/CD", badge: "https://img.shields.io/badge/CI%2FCD-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" }
+      ]
+    },
+    {
+      category: "AI & Language Model Applications",
+      items: [
+        { name: "LangChain", badge: "https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=chainlink&logoColor=white" },
+        { name: "LangGraph", badge: "https://img.shields.io/badge/LangGraph-FF6B35?style=for-the-badge&logo=graph&logoColor=white" },
+        { name: "OpenAI APIs", badge: "https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white" },
+        { name: "AI Agents", badge: "https://img.shields.io/badge/AI%20Agents-FF6B6B?style=for-the-badge&logo=robot&logoColor=white" },
+        { name: "RAG", badge: "https://img.shields.io/badge/RAG-4CAF50?style=for-the-badge&logo=search&logoColor=white" },
+        { name: "NLP", badge: "https://img.shields.io/badge/NLP-9C27B0?style=for-the-badge&logo=natural-language-processing&logoColor=white" }
+      ]
+    },
+    {
+      category: "Data Analytics & Visualization",
       items: [
         { name: "Pandas", badge: "https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" },
         { name: "NumPy", badge: "https://img.shields.io/badge/Numpy-013243?style=for-the-badge&logo=numpy&logoColor=white" },
-        { name: "Scikit-learn", badge: "https://img.shields.io/badge/scikit--learn-f7931e?style=for-the-badge&logo=scikit-learn&logoColor=white" },
-        { name: "TensorFlow", badge: "https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" },
-        { name: "PyTorch", badge: "https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" },
-        { name: "Matplotlib", badge: "https://img.shields.io/badge/Matplotlib-11557c?style=for-the-badge&logo=matplotlib&logoColor=white" }
-      ]
-    },
-    {
-      category: "Web Development",
-      items: [
-        { name: "React", badge: "https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" },
-        { name: "Next.js", badge: "https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" },
-        { name: "Django", badge: "https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" },
-        { name: "Flask", badge: "https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" },
-        { name: "HTML5", badge: "https://img.shields.io/badge/HTML5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white" },
-        { name: "CSS3", badge: "https://img.shields.io/badge/CSS3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white" },
-        { name: "Tailwind CSS", badge: "https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" }
-      ]
-    },
-    {
-      category: "Database & Cloud",
-      items: [
-        { name: "MySQL", badge: "https://img.shields.io/badge/MySQL-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white" },
-        { name: "PostgreSQL", badge: "https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" },
-        { name: "MongoDB", badge: "https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" },
-        { name: "AWS", badge: "https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white" },
-        { name: "Docker", badge: "https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" },
-        { name: "Git", badge: "https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" }
+        { name: "Streamlit", badge: "https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" },
+        { name: "Qlik", badge: "https://img.shields.io/badge/Qlik-009848?style=for-the-badge&logo=qlik&logoColor=white" }
       ]
     }
   ];
 
   const certificationsData = [
     {
-      name: "Oracle Cloud Infrastructure 2023 AI Certified Foundations Associate",
+      name: "Oracle Cloud Infrastructure 2024 AI Certified Foundations Associate",
       issuer: "Oracle",
       earnedOn: "July 2024",
       expiresOn: "July 2026",
-      certificateId: "OCI-AI-2023-CFA-12345",
-      verificationUrl: "https://education.oracle.com/certification",
-      backgroundImage: "/certificates/oracle-ai-foundations.jpg"
+      certificateId: "A77DDE0D6389956619942BF1D476D6A7F935062EB60432F7193ED37E45A9EF51",
+      verificationUrl: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=A77DDE0D6389956619942BF1D476D6A7F935062EB60432F7193ED37E45A9EF51",
+      backgroundImage: "/OracleCloudInfrastructure2024GenerativeAICertifiedProfessional.png"
     },
     {
-      name: "Salesforce Certified AI Associate",
-      issuer: "Trailhead",
-      earnedOn: "October 2024",
-      expiresOn: "Never",
-      certificateId: "SF-AI-ASSOCIATE-67890",
-      verificationUrl: "https://trailhead.salesforce.com/credentials",
-      backgroundImage: "/certificates/salesforce-ai-associate.jpg"
+      name: "Google Associate Cloud Engineer",
+      issuer: "Google",
+      earnedOn: "August 2024",
+      expiresOn: "August 2027",
+      certificateId: "914ef83e09564d21b41a3bad6f8a83ba",
+      verificationUrl: "https://www.credly.com/badges/d6cae25b-50c6-4015-98a8-221df2d5b064",
+      backgroundImage: "/GoogleAssociateCloudEngineer.png"
     },
     {
       name: "IBM Python Certification",
       issuer: "Etrain Education",
       earnedOn: "October 2024",
       expiresOn: "Never",
-      certificateId: "IBM-PY-CERT-54321",
-      verificationUrl: "https://etrain.skillsnetwork.site",
-      backgroundImage: "/certificates/ibm-python-cert.jpg"
+      certificateId: "16099bc225934617885c38cff2d8ce98",
+      verificationUrl: "https://courses.etrain.skillsnetwork.site/certificates/16099bc225934617885c38cff2d8ce98",
+      backgroundImage: "/IBM-Python.png"
     },
     {
-      name: "Oracle Cloud Infrastructure 2024 Generative AI Certified Professional",
-      issuer: "Oracle",
-      earnedOn: "July 2024",
-      expiresOn: "July 2026",
-      certificateId: "OCI-GEN-AI-2024-PRO-98765",
+      name: "Hacker Rank certified SQL Intermediate ",
+      issuer: "HackerRank",
+      earnedOn: "June 2024",
+      expiresOn: "Never Expires",
+      certificateId: "46d61bb25ce0",
       verificationUrl: "https://education.oracle.com/certification",
-      backgroundImage: "/certificates/oracle-genai-professional.jpg"
+      backgroundImage: "/HackerRankcertifiedSQLIntermediate.jpg"
     }
   ];
 
@@ -304,7 +324,7 @@ const About = () => {
               <span className="text-accent mr-2">🛠️</span>
               Technical Skills
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {skillsData.map((skillCategory, index) => (
                 <div key={index} className="bg-white/5 rounded-xl p-6 border border-white/10 hover:border-accent/30 transition-all duration-300">
                   <h4 className="text-xl font-semibold text-white mb-4 text-center">
@@ -348,14 +368,14 @@ const About = () => {
                   className="relative group cursor-pointer overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl h-full transition-all duration-300 hover:bg-white/15 hover:border-accent/50 hover:scale-105"
                   onClick={() => window.open(cert.verificationUrl, '_blank')}
                 >
-                  {/* Background Certificate Image with Dim Overlay */}
+                  {/* Background Certificate Image with Enhanced Visibility */}
                   <div 
-                    className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10 group-hover:opacity-15 transition-opacity duration-300"
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 group-hover:opacity-80 transition-opacity duration-300"
                     style={{ backgroundImage: `url(${cert.backgroundImage})` }}
                   ></div>
                   
-                  {/* Dim Overlay */}
-                  <div className="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors duration-300"></div>
+                  {/* Light Overlay for Text Readability */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-black/60 group-hover:from-black/30 group-hover:via-black/10 group-hover:to-black/50 transition-all duration-300"></div>
                   
                   {/* Content */}
                   <div className="relative z-10 p-6 h-full flex flex-col">
