@@ -16,8 +16,8 @@ const ProjectCard = ({ project, specialStyle, id }: ProjectCardInterface) => {
   const router = useRouter();
 
   const handleCardClick = () => {
-    // Navigate to project detail page
-    router.push(`/projects/${project.id}`);
+    // Navigate to project detail page using the slug
+    router.push(`/projects/${project.slug}`);
   };
 
   return (

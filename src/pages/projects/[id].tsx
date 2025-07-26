@@ -23,6 +23,7 @@ import { projectData } from '@/data/project';
 interface ProjectDetailProps {
   project: {
     id: string;
+    slug: string;
     image: string;
     category: string;
     name: string;
@@ -39,6 +40,11 @@ interface ProjectDetailProps {
 
 const ProjectDetail = ({ project }: ProjectDetailProps) => {
   const router = useRouter();
+
+  const handleBackToProjects = () => {
+    // Navigate to about page with projects hash
+    router.push('/about#projects');
+  };
 
   if (router.isFallback) {
     return <div>Loading...</div>;
@@ -58,7 +64,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
       <div className="xl:h-[inherit] h-auto xl:pt-[3%] xl:py-24 pt-12 pb-14 xl:pb-0 xl:mt-0 flex items-start max-h-dvh relative overflow-hidden">
         <ParticlesContainer />
         
-        <div className="container mx-auto relative z-10 w-full max-h-[90vh] overflow-y-auto scrollbar-custom">
+        <div className="container mx-auto relative z-10 w-full max-h-[90vh] overflow-y-auto scrollbar-custom pt-16 xl:pt-8">
           <motion.div
             variants={fadeIn("down", 0.6)}
             initial="hidden"
@@ -66,10 +72,25 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
             exit="hidden"
             className="w-full"
           >
+            {/* Back Button */}
+            <motion.div
+              variants={fadeIn("up", 0.1)}
+              className="mb-8 mt-4"
+            >
+              <button
+                onClick={handleBackToProjects}
+                className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors duration-300 cursor-pointer"
+                type="button"
+              >
+                <RiArrowLeftLine className="text-xl" />
+                <span>Back to Projects</span>
+              </button>
+            </motion.div>
+
             {/* Project Header */}
             <motion.div
               variants={fadeIn("up", 0.2)}
-              className="text-center mb-12"
+              className="text-center xl:text-left mb-12"
             >
               <motion.h1 
                 className="h2 mb-4 relative"
@@ -85,7 +106,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
                   transition={{ duration: 0.3 }}
                 />
               </motion.h1>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto xl:mx-0">
                 {project.description}
               </p>
             </motion.div>
@@ -106,16 +127,6 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-                      {project.link && (
-                        <Link
-                          target="_blank"
-                          href={project.link}
-                          aria-label="View project"
-                          className="bg-accent hover:bg-accent/80 text-white w-14 h-14 rounded-full flex justify-center items-center transition-all duration-300 transform hover:scale-110"
-                        >
-                          <RiExternalLinkFill className="text-xl" />
-                        </Link>
-                      )}
                       <Link
                         target="_blank"
                         href={project.github}
@@ -223,16 +234,6 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
               variants={fadeIn("up", 1.4)}
               className="flex justify-center gap-6 mt-12 pb-8"
             >
-              {project.link && (
-                <Link
-                  target="_blank"
-                  href={project.link}
-                  className="flex items-center gap-3 bg-accent hover:bg-accent/80 text-white px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105"
-                >
-                  <RiExternalLinkFill className="text-xl" />
-                  View Project
-                </Link>
-              )}
               <Link
                 target="_blank"
                 href={project.github}
@@ -251,14 +252,15 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = projectData.map((project) => ({
-    params: { id: project.id },
+    params: { id: project.slug },
   }));
 
   return { paths, fallback: false };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const project = projectData.find((project) => project.id === params?.id);
+  // Find project by slug
+  const project = projectData.find((project) => project.slug === params?.id);
 
   if (!project) {
     return {

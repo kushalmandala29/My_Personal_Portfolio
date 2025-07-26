@@ -1,133 +1,502 @@
-import React, { useEffect, useState } from "react";
-import CountUp from "react-countup";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
 
 import { fadeIn } from "@/components/Animations/FadeIn";
 import ParticlesContainer from "@/components/Other/ParticlesContainer/ParticlesContainer";
 import Avatar from "@/components/Other/Avatar/Avatar";
-import Icon from "@/components/Other/Icon/Icon";
+import ProjectCard from "@/components/Other/ProjectCard/ProjectCard";
 
-import { aboutData } from "@/data/about";
-import { AboutData, AboutInfo } from "@/interfaces/AboutInterface";
-
+import { projectData } from "@/data/project";
 
 const About = () => {
-  const [index, setIndex] = useState(0);
+  const router = useRouter();
 
+  // Initialize navigation state when component mounts
   useEffect(() => {
-    if (window.innerWidth > 1024) {
-      setIndex(1);
-    } else {
-      setIndex(0);
+    // Ensure proper navigation state when About page loads
+    if (router.pathname === '/about' && !router.asPath.includes('#')) {
+      window.history.replaceState(null, '', '/about#top');
+      window.dispatchEvent(new Event('urlchange'));
     }
-  }, []);
+  }, [router.pathname, router.asPath]);
+
+  // Handle scroll to sections when hash is present
+  useEffect(() => {
+    if (router.asPath.includes('#projects')) {
+      const timer = setTimeout(() => {
+        const projectsElement = document.getElementById('projects');
+        if (projectsElement) {
+          projectsElement.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    } else if (router.asPath.includes('#top') || router.pathname === '/about') {
+      const timer = setTimeout(() => {
+        const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
+        if (scrollContainer) {
+          scrollContainer.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+          // Ensure navigation shows "about me" when at top
+          if (!router.asPath.includes('#top')) {
+            window.history.replaceState(null, '', '/about#top');
+            window.dispatchEvent(new Event('urlchange'));
+          }
+        }
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [router.asPath, router.pathname]);
+
+  // Handle scroll detection to update URL hash
+  useEffect(() => {
+    const handleScroll = () => {
+      const projectsElement = document.getElementById('projects');
+      const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
+      
+      if (projectsElement && scrollContainer) {
+        const rect = projectsElement.getBoundingClientRect();
+        const containerRect = scrollContainer.getBoundingClientRect();
+        
+        // Check if projects section is in view (at least 30% visible from top)
+        const isProjectsInView = rect.top < containerRect.height * 0.7 && rect.bottom > containerRect.height * 0.3;
+        
+        if (isProjectsInView && !router.asPath.includes('#projects')) {
+          // Update URL to show projects hash
+          window.history.replaceState(null, '', '/about#projects');
+          // Dispatch custom event to notify Nav component
+          window.dispatchEvent(new Event('urlchange'));
+        } else if (!isProjectsInView && router.asPath.includes('#projects') && scrollContainer.scrollTop < projectsElement.offsetTop - 200) {
+          // When scrolling away from projects (upward), go back to top section
+          window.history.replaceState(null, '', '/about#top');
+          // Dispatch custom event to notify Nav component
+          window.dispatchEvent(new Event('urlchange'));
+        } else if (!router.asPath.includes('#') || (router.pathname === '/about' && scrollContainer.scrollTop < 100 && !router.asPath.includes('#top'))) {
+          // When at the very top and no hash, set to top hash
+          window.history.replaceState(null, '', '/about#top');
+          // Dispatch custom event to notify Nav component
+          window.dispatchEvent(new Event('urlchange'));
+        }
+      }
+    };
+
+    const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+      // Initial check with delay to ensure DOM is ready
+      const timer = setTimeout(handleScroll, 200);
+      return () => {
+        scrollContainer.removeEventListener('scroll', handleScroll);
+        clearTimeout(timer);
+      };
+    }
+  }, [router.asPath, router.pathname]);
+  const educationData = [
+    {
+      degree: "Bachelor of Technology in Artificial Intelligence and Data Science",
+      institution: "KL University",
+      period: "2022 - Present",
+      cgpa: "9.56/10",
+      description: "Specializing in Cloud and Edge Computing, Machine Learning, and AI applications."
+    },
+    {
+      degree: "M.P.C (Mathematics, Physics, Chemistry)",
+      institution: "SRI SRINIVASA GRAVIITY Junior College",
+      period: "2020 - 2022",
+      cgpa: "889/1000",
+      description: "Strong foundation in mathematics and sciences."
+    },
+    {
+      degree: "High School Diploma",
+      institution: "V.P.S Public School",
+      period: "2011 - 2020",
+      cgpa: "7.55/10",
+      description: "Comprehensive secondary education with focus on academics."
+    }
+  ];
+
+  const workExperienceData = [
+    {
+      position: "Research Assistant",
+      company: "KLGLUG + BalaSwecha(SwechaAP)",
+      period: "Feb 2025 - Apr 2025",
+      description: "Working on term paper research focusing on open-source technologies and community development."
+    },
+    {
+      position: "Business Analyst Intern",
+      company: "SmartInternz",
+      period: "Apr 2024 - June 2024",
+      description: "Analyzed business requirements and provided data-driven insights for decision making."
+    },
+    {
+      position: "AI/ML Virtual Intern",
+      company: "AICTE x Edunet x AWS",
+      period: "Jan 2024 - Mar 2024",
+      description: "Developed machine learning models and deployed them on AWS cloud infrastructure."
+    }
+  ];
+
+  const skillsData = [
+    {
+      category: "Programming & Scripting",
+      items: [
+        { name: "Python", badge: "https://img.shields.io/badge/Python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" },
+        { name: "C", badge: "https://img.shields.io/badge/C-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white" },
+        { name: "JavaScript", badge: "https://img.shields.io/badge/JavaScript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" },
+        { name: "SQL", badge: "https://img.shields.io/badge/SQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" }
+      ]
+    },
+    {
+      category: "Web Development & API Design",
+      items: [
+        { name: "Django", badge: "https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" },
+        { name: "FastAPI", badge: "https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi&logoColor=white" },
+        { name: "RESTful APIs", badge: "https://img.shields.io/badge/REST-02569B?style=for-the-badge&logo=rest&logoColor=white" },
+        { name: "Postman", badge: "https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" }
+      ]
+    },
+    {
+      category: "Databases & Data Engineering",
+      items: [
+        { name: "PostgreSQL", badge: "https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" },
+        { name: "MySQL", badge: "https://img.shields.io/badge/MySQL-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white" },
+        { name: "Chroma (Vector DB)", badge: "https://img.shields.io/badge/Chroma-FF6B6B?style=for-the-badge&logo=database&logoColor=white" },
+        { name: "Apache Flink", badge: "https://img.shields.io/badge/Apache%20Flink-E6526F?style=for-the-badge&logo=apache-flink&logoColor=white" },
+        { name: "Apache Airflow", badge: "https://img.shields.io/badge/Apache%20Airflow-017CEE?style=for-the-badge&logo=apache-airflow&logoColor=white" }
+      ]
+    },
+    {
+      category: "Cloud & DevOps",
+      items: [
+        { name: "AWS", badge: "https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white" },
+        { name: "Google Cloud Platform", badge: "https://img.shields.io/badge/GCP-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white" },
+        { name: "Git", badge: "https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" },
+        { name: "GitHub", badge: "https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" },
+        { name: "Docker", badge: "https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" },
+        { name: "CI/CD", badge: "https://img.shields.io/badge/CI%2FCD-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" }
+      ]
+    },
+    {
+      category: "AI & Language Model Applications",
+      items: [
+        { name: "LangChain", badge: "https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=chainlink&logoColor=white" },
+        { name: "LangGraph", badge: "https://img.shields.io/badge/LangGraph-FF6B35?style=for-the-badge&logo=graph&logoColor=white" },
+        { name: "OpenAI APIs", badge: "https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white" },
+        { name: "AI Agents", badge: "https://img.shields.io/badge/AI%20Agents-FF6B6B?style=for-the-badge&logo=robot&logoColor=white" },
+        { name: "RAG", badge: "https://img.shields.io/badge/RAG-4CAF50?style=for-the-badge&logo=search&logoColor=white" },
+        { name: "NLP", badge: "https://img.shields.io/badge/NLP-9C27B0?style=for-the-badge&logo=natural-language-processing&logoColor=white" }
+      ]
+    },
+    {
+      category: "Data Analytics & Visualization",
+      items: [
+        { name: "Pandas", badge: "https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" },
+        { name: "NumPy", badge: "https://img.shields.io/badge/Numpy-013243?style=for-the-badge&logo=numpy&logoColor=white" },
+        { name: "Streamlit", badge: "https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" },
+        { name: "Qlik", badge: "https://img.shields.io/badge/Qlik-009848?style=for-the-badge&logo=qlik&logoColor=white" }
+      ]
+    }
+  ];
+
+  const certificationsData = [
+    {
+      name: "Oracle Cloud Infrastructure 2024 AI Certified Foundations Associate",
+      issuer: "Oracle",
+      earnedOn: "July 2024",
+      expiresOn: "July 2026",
+      certificateId: "A77DDE0D6389956619942BF1D476D6A7F935062EB60432F7193ED37E45A9EF51",
+      verificationUrl: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=A77DDE0D6389956619942BF1D476D6A7F935062EB60432F7193ED37E45A9EF51",
+      backgroundImage: "/OracleCloudInfrastructure2024GenerativeAICertifiedProfessional.png"
+    },
+    {
+      name: "Google Associate Cloud Engineer",
+      issuer: "Google",
+      earnedOn: "August 2024",
+      expiresOn: "August 2027",
+      certificateId: "914ef83e09564d21b41a3bad6f8a83ba",
+      verificationUrl: "https://www.credly.com/badges/d6cae25b-50c6-4015-98a8-221df2d5b064",
+      backgroundImage: "/GoogleAssociateCloudEngineer.png"
+    },
+    {
+      name: "IBM Python Certification",
+      issuer: "Etrain Education",
+      earnedOn: "October 2024",
+      expiresOn: "Never",
+      certificateId: "16099bc225934617885c38cff2d8ce98",
+      verificationUrl: "https://courses.etrain.skillsnetwork.site/certificates/16099bc225934617885c38cff2d8ce98",
+      backgroundImage: "/IBM-Python.png"
+    },
+    {
+      name: "Hacker Rank certified SQL Intermediate ",
+      issuer: "HackerRank",
+      earnedOn: "June 2024",
+      expiresOn: "Never Expires",
+      certificateId: "46d61bb25ce0",
+      verificationUrl: "https://www.hackerrank.com/certificates/46d61bb25ce0",
+      backgroundImage: "/HackerRankcertifiedSQLIntermediate.png"
+    },
+    
+    {
+      name: "NAT - N5 japanese Language Proficiency certification",
+      issuer: "NAT",
+      earnedOn: "June 2025",
+      expiresOn: "Never Expires",
+      certificateId: "NA",
+      verificationUrl: "https://drive.google.com/file/d/1lEiurHvwODSIiJySUONd5P8SfJC1-c8F/view?usp=sharing",
+      backgroundImage: "/natn5certificate.png"
+    }
+  ];
 
   return (
-    <div className="min-h-screen xl:py-32 pt-20 xl:mb-0 xl:my-0 text-center xl:text-left">
+    <div className="h-screen w-full relative overflow-hidden">
+      <ParticlesContainer />
+      
       <motion.div
         variants={fadeIn("right", 0.2)}
         initial="hidden"
         animate="show"
         exit="hidden"
-        className="hidden xl:flex absolute -bottom-[100px] -left-[210px] z-[0] max-w-[460px] "
+        className="hidden xl:flex absolute -bottom-[100px] -left-[210px] z-[0] max-w-[460px]"
       >
         <Avatar opacity={true} />
       </motion.div>
-      <div className="container mx-auto flex flex-col items-center xl:flex-row gap-x-6 gap-y-8">
-        <div className="flex-1 flex flex-col justify-center">
-          <h2
-            className="h2 z-10">
-            My <span className="text-accent">Journey</span> in Development
-          </h2>
-          <div className="hidden xl:flex flex-col max-w-[500px] mx-auto xl:mx-0 mb-6 xl:mb-12 px-2 xl:px-0 z-10 space-y-4">
-            <p>
+      
+      {/* Single Full-Screen Scrollable Container */}
+      <div className="h-full w-full overflow-y-auto scrollbar-custom">
+        <div className="min-h-screen container mx-auto px-6 xl:px-8 relative z-10 py-12 xl:py-16">
+          {/* About Me Section */}
+          <motion.div
+            id="top"
+            variants={fadeIn("down", 0.2)}
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            className="mb-12 xl:mb-16"
+          >
+            <h2 className="h2 z-10 mb-6 text-center xl:text-left text-3xl xl:text-4xl">
+              About <span className="text-accent">Me</span>
+            </h2>
+            <p className="text-white/80 text-lg xl:text-xl leading-relaxed max-w-5xl mx-auto xl:mx-0 text-center xl:text-left">
               I'm Kushal, a final-year B.Tech student specializing in Artificial Intelligence & Data Science with a focus on Cloud and Edge Computing at KL University. Passionate about building innovative, real-world AI solutions, I have hands-on experience in Python, Django, RESTful APIs, and integrating large language models (LLMs) into production systems.
             </p>
-            <p>
-              In my free time, I love listening to music and playing basketball, which help me stay creative, energized, and balanced.
-            </p>
-            <p>
-              Looking ahead, I'm excited to pursue roles in software engineering, DevOps, cloud engineering, data science, and AI/ML development, where I can apply my skills to build innovative, scalable, and intelligent solutions.
-            </p>
-          </div>
-        </div>
-        <motion.div
-          variants={fadeIn("left", 0.4)}
-          initial="hidden"
-          animate="show"
-          exit="hidden"
-          className="flex flex-col w-full xl:max-w-[48%]">
-          <div className="overflow-x-auto scrollbar-none mb-4">
-            <div className="flex gap-4 xl:gap-x-8 mx-auto xl:mx-0 min-w-max px-2 xl:px-0">
-              {aboutData.map((item: AboutData, itemIndex: number) => {
-                const isActive = index === itemIndex;
-                const isFirstTab = itemIndex === 0;
-                
-                return (
-                  <div
-                    key={`about-${itemIndex}`}
-                    className={`
-                      ${isActive ? "text-accent after:w-[100%] after:bg-accent" : "text-white/60 after:w-8 after:bg-white"}
-                      ${isFirstTab ? "xl:hidden" : ""}
-                      cursor-pointer capitalize xl:text-lg relative 
-                      after:h-[2px] after:absolute after:-bottom-1 after:left-0 
-                      after:transition-all after:duration-300
-                      text-[15px] hover:text-accent transition-all duration-300
-                      whitespace-nowrap flex-shrink-0
-                    `}
-                    onClick={() => {
-                      setIndex(itemIndex);
-                    }}
-                  >
-                    {item.title}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className="w-full">
-            <div className="py-2 xl:py-6 flex flex-col gap-y-2 xl:gap-y-4 items-center xl:items-start">
-              {aboutData.map((tabItem: AboutData, tabIndex: number) => (
-                <div key={`tab-${tabIndex}`} className={`w-full ${index === tabIndex ? 'block' : 'hidden'}`}>
-                  {tabItem.info.map((item: AboutInfo, itemIndex: number) => (
-                    <div key={`info-${tabIndex}-${itemIndex}`} className="flex-1 flex flex-col max-w-max gap-2 items-center text-white/60 xl:items-start mb-6">
-                      <div key={`title-stage-${tabIndex}-${itemIndex}`} className={`font-light mb-2 md:mb-0 whitespace-nowrap flex items-center gap-3 ${item.title ? "" : "hidden"}`}>
-                        <span className="text-white">{item.title}</span>
-                        {item.stage && <span className="text-accent">- {item.stage}</span>}
-                      </div>
-                      {item.course && (
-                        <div key={`course-${tabIndex}-${itemIndex}`} className="text-sm text-white/80 font-medium">
-                          {item.course}
-                        </div>
-                      )}
-                      {item.grade && (
-                        <div key={`grade-${tabIndex}-${itemIndex}`} className="text-sm text-accent">
-                          {item.grade}
-                        </div>
-                      )}
-                      {!item.course && !item.grade && item.stage && (
-                        <div key={`stage-${tabIndex}-${itemIndex}`}>{item.stage}</div>
-                      )}
-                      <div key={`hidden-${tabIndex}-${itemIndex}`} className="hidden md:flex"></div>
-                      <div key={`icons-${tabIndex}-${itemIndex}`} className="flex gap-4 flex-wrap xl:justify-start justify-center xl xl:px-0 px-5 xl:max-w-[500px]">
-                        {item.icons?.map((icon, iconIndex) => (
-                          <div key={`icon-${tabIndex}-${itemIndex}-${iconIndex}`} className="text-2xl text-white/90">
-                            <Icon className="" width={24} height={24} id={icon} />
-                          </div>
-                        ))}
+          </motion.div>
+
+          {/* Education and Work Experience */}
+          <motion.div
+            variants={fadeIn("up", 0.3)}
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-12 mb-12 xl:mb-16"
+          >
+            {/* Education Section */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 xl:p-8 border border-white/10">
+              <h3 className="text-2xl xl:text-3xl font-bold text-white mb-6 flex items-center justify-center xl:justify-start">
+                <span className="text-accent mr-3 text-2xl">📚</span>
+                Education
+              </h3>
+              <div className="space-y-6">
+                {educationData.map((edu, index) => (
+                  <div key={index} className="border-l-2 border-accent/50 pl-4">
+                    <div className="flex flex-col space-y-2">
+                      <h4 className="font-semibold text-white text-lg xl:text-xl">{edu.degree}</h4>
+                      <p className="text-accent font-medium text-base xl:text-lg">{edu.institution}</p>
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                        <span className="text-white/60 text-sm xl:text-base">{edu.period}</span>
+                        <span className="text-accent text-sm xl:text-base font-medium">CGPA: {edu.cgpa}</span>
                       </div>
                     </div>
-                  ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Work Experience Section */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 xl:p-8 border border-white/10">
+              <h3 className="text-2xl xl:text-3xl font-bold text-white mb-6 flex items-center justify-center xl:justify-start">
+                <span className="text-accent mr-3 text-2xl">💼</span>
+                Work Experience
+              </h3>
+              <div className="space-y-6">
+                {workExperienceData.map((work, index) => (
+                  <div key={index} className="border-l-2 border-accent/50 pl-4">
+                    <div className="flex flex-col space-y-2">
+                      <h4 className="font-semibold text-white text-lg xl:text-xl">{work.position}</h4>
+                      <p className="text-accent font-medium text-base xl:text-lg">{work.company}</p>
+                      <span className="text-white/60 text-sm xl:text-base">{work.period}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Skills Section */}
+          <motion.div
+            variants={fadeIn("up", 0.4)}
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            className="bg-white/5 backdrop-blur-sm rounded-xl p-6 xl:p-8 border border-white/10 mb-12 xl:mb-16"
+          >
+            <h3 className="text-2xl xl:text-3xl font-bold text-white mb-8 flex items-center justify-center xl:justify-start">
+              <span className="text-accent mr-3 text-2xl">🛠️</span>
+              Technical Skills
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
+              {skillsData.map((skillCategory, index) => (
+                <div key={index} className="bg-white/5 rounded-lg p-6 xl:p-8 border border-white/10 hover:border-accent/30 transition-all duration-300">
+                  <h4 className="text-xl xl:text-2xl font-semibold text-white mb-4 text-center">
+                    {skillCategory.category}
+                  </h4>
+                  <div className="flex flex-wrap gap-3 justify-center">
+                    {skillCategory.items.map((skill, skillIndex) => (
+                      <div
+                        key={skillIndex}
+                        className="transition-all duration-300 hover:scale-110"
+                      >
+                        <img
+                          src={skill.badge}
+                          alt={skill.name}
+                          className="skill-badge-image h-8 xl:h-9"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+
+          {/* Certifications Section */}
+          <motion.div
+            variants={fadeIn("up", 0.5)}
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            className="bg-white/5 backdrop-blur-sm rounded-xl p-6 xl:p-8 border border-white/10 mb-12 xl:mb-16"
+          >
+            <h3 className="text-2xl xl:text-3xl font-bold text-white mb-8 flex items-center justify-center xl:justify-start">
+              <span className="text-accent mr-3 text-2xl">🏆</span>
+              Certifications
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
+              {certificationsData.map((cert, index) => (
+                <div 
+                  key={index} 
+                  className="relative group cursor-pointer overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg h-60 xl:h-64 transition-all duration-300 hover:bg-white/15 hover:border-accent/50 hover:scale-105"
+                  onClick={() => window.open(cert.verificationUrl, '_blank')}
+                >
+                  {/* Background Certificate Image */}
+                  <div 
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 group-hover:opacity-80 transition-opacity duration-300"
+                    style={{ backgroundImage: `url(${cert.backgroundImage})` }}
+                  ></div>
+                  
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-black/60 group-hover:from-black/30 group-hover:via-black/10 group-hover:to-black/50 transition-all duration-300"></div>
+                  
+                  {/* Content */}
+                  <div className="relative z-10 p-4 xl:p-5 h-full flex flex-col">
+                    <div className="flex items-start mb-3">
+                      <span className="text-accent text-xl mr-3">🎓</span>
+                      <div className="flex-1">
+                        <h4 className="text-sm xl:text-base font-bold text-white line-clamp-2 mb-2">
+                          {cert.name}
+                        </h4>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2 flex-grow text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-white/70">Issued by:</span>
+                        <span className="text-accent font-medium">{cert.issuer}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-white/70">Earned:</span>
+                        <span className="text-white/90 font-medium">{cert.earnedOn}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-3 pt-3 border-t border-white/10">
+                      <div className="flex items-center justify-center text-accent text-sm group-hover:text-white transition-colors duration-300">
+                        <span className="mr-2">🔗</span>
+                        <span>Click to verify</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Projects Section */}
+          <motion.div
+            id="projects"
+            variants={fadeIn("up", 0.6)}
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            className="bg-white/5 backdrop-blur-sm rounded-xl p-6 xl:p-8 border border-white/10 mb-12 xl:mb-16"
+          >
+            <h3 className="text-2xl xl:text-3xl font-bold text-white mb-8 flex items-center justify-center xl:justify-start">
+              <span className="text-accent mr-3 text-2xl">🚀</span>
+              Featured Projects
+            </h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8">
+              {projectData.map((project, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ y: 30, opacity: 0, scale: 0.95 }}
+                  animate={{ y: 0, opacity: 1, scale: 1 }}
+                  transition={{ 
+                    delay: index * 0.1,
+                    duration: 0.4,
+                    ease: "easeOut"
+                  }}
+                  whileHover={{ 
+                    y: -8,
+                    scale: 1.03,
+                    transition: { duration: 0.2 }
+                  }}
+                  className="group relative"
+                >
+                  <div className="relative overflow-hidden rounded-lg">
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                      initial={false}
+                    />
+                    <div className="relative z-10 transition-transform duration-300 group-hover:scale-[1.01]">
+                      <ProjectCard id={index} project={project} specialStyle={true} />
+                    </div>
+                    
+                    {/* Glow effect */}
+                    <motion.div 
+                      className="absolute -inset-2 bg-gradient-to-r from-accent/20 via-accent/30 to-accent/20 rounded-lg opacity-0 blur-lg group-hover:opacity-100 transition-opacity duration-300 -z-10"
+                      initial={false}
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Bottom spacing */}
+          <div className="h-16"></div>
+        </div>
       </div>
-      <div className="w-[100vw] h-full absolute right-0 bottom-0 -z-10">
+
+      {/* Background */}
+      <div className="w-full h-full absolute right-0 bottom-0 -z-10">
         <div className="xl:opacity-100 opacity-30 bg-paints bg-cover bg-center bg-no-repeat hue-rotate-[-20deg] w-full h-full absolute mix-blend-color-dodge translate-z-0">
         </div>
-        <ParticlesContainer />
       </div>
     </div>
   );

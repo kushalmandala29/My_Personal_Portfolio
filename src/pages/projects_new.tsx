@@ -1,5 +1,5 @@
 import Seo from "@/components/Other/Seo";
-import Projects from "@/components/Templates/Projects/Projects";
+import ProjectsPageComponent from "@/components/Templates/ProjectsPage/ProjectsPage";
 
 const ProjectsPage = () => {
   return (
@@ -8,7 +8,7 @@ const ProjectsPage = () => {
         title="Projects • Kushal Mandala • Portfolio"
         description="Explore a gallery of inspiring and innovative projects. Each project is a demonstration of my commitment to technical excellence and delivering tailored solutions for clients."
       />
-      <Projects />
+      <ProjectsPageComponent />
     </>
   );
 };

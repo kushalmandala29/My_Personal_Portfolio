@@ -1,11 +1,61 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
 import { navData } from "@/data/nav"
 
 const Nav = () => {
   const router = useRouter();
   const pathname = router.pathname;
+  const [currentPath, setCurrentPath] = useState(router.asPath);
+
+  // Listen for URL changes including those made by window.history.replaceState
+  useEffect(() => {
+    const handleUrlChange = () => {
+      setCurrentPath(window.location.pathname + window.location.hash);
+    };
+
+    // Listen for popstate events (back/forward browser buttons)
+    window.addEventListener('popstate', handleUrlChange);
+    
+    // Listen for custom urlchange events from About component
+    window.addEventListener('urlchange', handleUrlChange);
+    
+    // Listen for router changes (Next.js navigation)
+    router.events?.on('routeChangeComplete', handleUrlChange);
+
+    // Update current path when router.asPath changes
+    setCurrentPath(router.asPath);
+
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange);
+      window.removeEventListener('urlchange', handleUrlChange);
+      router.events?.off('routeChangeComplete', handleUrlChange);
+    };
+  }, [router.asPath, router.events]);
+
+  // Function to check if a nav item is active
+  const isActive = (linkPath: string) => {
+    // Special handling for Projects section - when on /about#projects, only Projects should be active
+    if (linkPath === '/about#projects') {
+      return currentPath === '/about#projects';
+    }
+    
+    // Special handling for About tab - it should be active when on /about#top or plain /about
+    // BUT NOT when on projects section
+    if (linkPath === '/about#top') {
+      return (currentPath === '/about#top' || (pathname === '/about' && !currentPath.includes('#'))) 
+             && !currentPath.includes('#projects');
+    }
+    
+    // For other hash-based links
+    if (linkPath.includes('#')) {
+      return currentPath === linkPath;
+    }
+    
+    // For regular paths (like /contact, /)
+    return linkPath === pathname && !currentPath.includes('#');
+  };
 
   return (
     <nav className="flex flex-col items-center justify-center gap-y-4 fixed h-fit bottom-0 mt-auto xl:right-[2%] z-50 top-0 w-full xl:w-16 xl:max-w-md xl:h-screen">
@@ -13,7 +63,7 @@ const Nav = () => {
         {navData.map((link, index) => {
           return (
             <Link
-              className={`${link.path === pathname && "text-accent"
+              className={`${isActive(link.path) && "text-accent"
                 } relative flex items-center group hover:text-accent transition-all duration-300 xl:w-fit w-6`}
               href={link.path}
               key={index}

@@ -1,6 +1,7 @@
 export const projectData = [
   {
-    id: "ToxiTrack – Serverless Telegram Moderator",
+    id: "toxitrack-serverless-telegram-moderator",
+    slug: "toxitrack-serverless-telegram-moderator",
     image: "/toxitrack.png",
     category: "front end",
     name: "🛡️ ToxiTrack – Serverless Telegram Moderator",
@@ -14,7 +15,8 @@ export const projectData = [
     github: "https://github.com/kushalmandala29/ToxiTrack-Serverless-Telegram-Moderator.git"
   },
   {
-    id: "Student Assistant System",
+    id: "student-assistant-system",
+    slug: "student-assistant-system",
     image: "/student_assistence_system.png",
     category: "front end",
     name: "Student Assistant System",
@@ -28,7 +30,8 @@ export const projectData = [
     github: "https://github.com/kushalmandala29/Student-Assistant-System.git"
   },
   {
-    id: "Interactive_Projectile_Motion_Simulation_accross_planets",
+    id: "interactive-projectile-motion-simulation",
+    slug: "interactive-projectile-motion-simulation",
     image: "/projectile_motion.png",
     category: "front end",
     name: "Interactive_Projectile_Motion_Simulation_accross_planets",
@@ -42,7 +45,8 @@ export const projectData = [
     github: "https://github.com/kushalmandala29/Interactive_Projectile_Motion_Simulation_accross_planets.git"
   },
   {
-    id: "Employment Leave Management System",
+    id: "employment-leave-management-system",
+    slug: "employment-leave-management-system",
     image: "/employee_leave_management_system.png",
     category: "front end",
     name: "Employment Leave Management System",
@@ -56,7 +60,8 @@ export const projectData = [
     github: "https://github.com/kushalmandala29/employment-leave-management-system.git"
   },
   {
-    id: "Music Recommendation System",
+    id: "music-recommendation-system",
+    slug: "music-recommendation-system",
     image: "/music_recommdationsystem.png",
     category: "front end",
     name: "Music Recommendation System",
@@ -70,7 +75,8 @@ export const projectData = [
     github: "https://github.com/kushalmandala29/Music-Recommendation-Project.git"
   },
   {
-    id: "Dog Breed Classification",
+    id: "dog-breed-classification",
+    slug: "dog-breed-classification",
     image: "/dog_classification.png",
     category: "front end",
     name: "Dog Breed Classification",
