@@ -20,12 +20,6 @@ const FullPageScroll = () => {
 
   // Initialize current page based on route
   useEffect(() => {
-    // Handle special cases for about page with hash
-    if (router.asPath === '/about#projects' || router.asPath === '/about#top' || router.pathname === '/about') {
-      setCurrentPage(1); // About page index
-      return;
-    }
-    
     // Handle project detail pages - don't interfere with them
     if (router.pathname.startsWith('/projects/')) {
       return; // Don't set currentPage for project detail pages
@@ -35,7 +29,7 @@ const FullPageScroll = () => {
     if (currentIndex !== -1) {
       setCurrentPage(currentIndex);
     }
-  }, [router.pathname, router.asPath]);
+  }, [router.pathname]);
 
   // Handle wheel scroll
   useEffect(() => {
@@ -45,18 +39,44 @@ const FullPageScroll = () => {
         return;
       }
       
-      // Check if the scroll is happening within the About page scrollable content
-      const target = e.target as HTMLElement;
-      const aboutScrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
-      
-      // If scrolling within About page scroll container and there's more content to scroll
-      if (aboutScrollContainer && aboutScrollContainer.contains(target)) {
-        const container = aboutScrollContainer as HTMLElement;
-        const canScrollDown = container.scrollTop < container.scrollHeight - container.clientHeight;
-        const canScrollUp = container.scrollTop > 0;
-        
-        // If can scroll within About page, don't trigger page navigation
-        if ((e.deltaY > 0 && canScrollDown) || (e.deltaY < 0 && canScrollUp)) {
+      // Special handling for About page internal scrolling
+      if (router.pathname === '/about') {
+        const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
+        if (scrollContainer) {
+          const isAtTop = scrollContainer.scrollTop === 0;
+          const isAtBottom = scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 10;
+          
+          // Allow scrolling up from About page only if at the very top
+          if (e.deltaY < 0 && isAtTop && currentPage > 0) {
+            e.preventDefault();
+            if (isScrolling) return;
+            setIsScrolling(true);
+            const prevPage = currentPage - 1;
+            setCurrentPage(prevPage);
+            router.push(pages[prevPage].route);
+            setTimeout(() => {
+              window.dispatchEvent(new Event('urlchange'));
+              setIsScrolling(false);
+            }, 600);
+            return;
+          }
+          
+          // Allow scrolling down from About page only if at the very bottom
+          if (e.deltaY > 0 && isAtBottom && currentPage < pages.length - 1) {
+            e.preventDefault();
+            if (isScrolling) return;
+            setIsScrolling(true);
+            const nextPage = currentPage + 1;
+            setCurrentPage(nextPage);
+            router.push(pages[nextPage].route);
+            setTimeout(() => {
+              window.dispatchEvent(new Event('urlchange'));
+              setIsScrolling(false);
+            }, 600);
+            return;
+          }
+          
+          // Otherwise, let the About page handle its own scrolling
           return;
         }
       }
@@ -79,8 +99,11 @@ const FullPageScroll = () => {
         router.push(pages[prevPage].route);
       }
       
-      // Reset scrolling flag after animation
-      setTimeout(() => setIsScrolling(false), 1000);
+      // Reset scrolling flag after animation and dispatch nav update
+      setTimeout(() => {
+        window.dispatchEvent(new Event('urlchange'));
+        setIsScrolling(false);
+      }, 600);
     };
 
     // Add event listener to document instead of container
@@ -98,20 +121,64 @@ const FullPageScroll = () => {
       
       if (isScrolling) return;
       
+      // Special handling for About page
+      if (router.pathname === '/about') {
+        const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
+        if (scrollContainer) {
+          const isAtTop = scrollContainer.scrollTop === 0;
+          const isAtBottom = scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 10;
+          
+          if ((e.key === 'ArrowUp' || e.key === 'PageUp') && isAtTop && currentPage > 0) {
+            e.preventDefault();
+            setIsScrolling(true);
+            const prevPage = currentPage - 1;
+            setCurrentPage(prevPage);
+            router.push(pages[prevPage].route);
+            setTimeout(() => {
+              window.dispatchEvent(new Event('urlchange'));
+              setIsScrolling(false);
+            }, 600);
+            return;
+          }
+          
+          if ((e.key === 'ArrowDown' || e.key === 'PageDown') && isAtBottom && currentPage < pages.length - 1) {
+            e.preventDefault();
+            setIsScrolling(true);
+            const nextPage = currentPage + 1;
+            setCurrentPage(nextPage);
+            router.push(pages[nextPage].route);
+            setTimeout(() => {
+              window.dispatchEvent(new Event('urlchange'));
+              setIsScrolling(false);
+            }, 600);
+            return;
+          }
+          
+          // Let About page handle its own keyboard scrolling
+          return;
+        }
+      }
+      
       if ((e.key === 'ArrowDown' || e.key === 'PageDown') && currentPage < pages.length - 1) {
         e.preventDefault();
         setIsScrolling(true);
         const nextPage = currentPage + 1;
         setCurrentPage(nextPage);
         router.push(pages[nextPage].route);
-        setTimeout(() => setIsScrolling(false), 1000);
+        setTimeout(() => {
+          window.dispatchEvent(new Event('urlchange'));
+          setIsScrolling(false);
+        }, 600);
       } else if ((e.key === 'ArrowUp' || e.key === 'PageUp') && currentPage > 0) {
         e.preventDefault();
         setIsScrolling(true);
         const prevPage = currentPage - 1;
         setCurrentPage(prevPage);
         router.push(pages[prevPage].route);
-        setTimeout(() => setIsScrolling(false), 1000);
+        setTimeout(() => {
+          window.dispatchEvent(new Event('urlchange'));
+          setIsScrolling(false);
+        }, 600);
       }
     };
 
@@ -134,6 +201,25 @@ const FullPageScroll = () => {
       if (router.pathname.startsWith('/projects/')) {
         return;
       }
+      
+      // Special handling for About page - allow internal scrolling
+      if (router.pathname === '/about') {
+        const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
+        if (scrollContainer) {
+          const isAtTop = scrollContainer.scrollTop === 0;
+          const isAtBottom = scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 10;
+          const diff = touchStartY - e.touches[0].clientY;
+          
+          // Only prevent default if trying to navigate to other pages
+          if ((diff < 0 && isAtTop) || (diff > 0 && isAtBottom)) {
+            if (Math.abs(diff) > 10) {
+              e.preventDefault();
+            }
+          }
+          return;
+        }
+      }
+      
       if (Math.abs(e.touches[0].clientY - touchStartY) > 10) {
         e.preventDefault();
       }
@@ -150,6 +236,42 @@ const FullPageScroll = () => {
       const touchEndY = e.changedTouches[0].clientY;
       const diff = touchStartY - touchEndY;
       
+      // Special handling for About page
+      if (router.pathname === '/about') {
+        const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
+        if (scrollContainer) {
+          const isAtTop = scrollContainer.scrollTop === 0;
+          const isAtBottom = scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 10;
+          
+          if (Math.abs(diff) > 50) {
+            if (diff < 0 && isAtTop && currentPage > 0) {
+              // Swipe down (previous page) from top
+              setIsScrolling(true);
+              const prevPage = currentPage - 1;
+              setCurrentPage(prevPage);
+              router.push(pages[prevPage].route);
+              setTimeout(() => {
+                window.dispatchEvent(new Event('urlchange'));
+                setIsScrolling(false);
+              }, 600);
+              return;
+            } else if (diff > 0 && isAtBottom && currentPage < pages.length - 1) {
+              // Swipe up (next page) from bottom
+              setIsScrolling(true);
+              const nextPage = currentPage + 1;
+              setCurrentPage(nextPage);
+              router.push(pages[nextPage].route);
+              setTimeout(() => {
+                window.dispatchEvent(new Event('urlchange'));
+                setIsScrolling(false);
+              }, 600);
+              return;
+            }
+          }
+          return;
+        }
+      }
+      
       if (Math.abs(diff) > 50) { // Minimum swipe distance
         setIsScrolling(true);
         
@@ -165,7 +287,10 @@ const FullPageScroll = () => {
           router.push(pages[prevPage].route);
         }
         
-        setTimeout(() => setIsScrolling(false), 1000);
+        setTimeout(() => {
+          window.dispatchEvent(new Event('urlchange'));
+          setIsScrolling(false);
+        }, 600);
       }
     };
 

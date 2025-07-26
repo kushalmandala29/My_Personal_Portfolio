@@ -36,23 +36,25 @@ const Nav = () => {
 
   // Function to check if a nav item is active
   const isActive = (linkPath: string) => {
+    // Special handling for Projects section - when on /about#projects, only Projects should be active
+    if (linkPath === '/about#projects') {
+      return currentPath === '/about#projects';
+    }
+    
     // Special handling for About tab - it should be active when on /about#top or plain /about
+    // BUT NOT when on projects section
     if (linkPath === '/about#top') {
-      return currentPath === '/about#top' || (pathname === '/about' && !currentPath.includes('#projects'));
+      return (currentPath === '/about#top' || (pathname === '/about' && !currentPath.includes('#'))) 
+             && !currentPath.includes('#projects');
     }
     
-    // Special handling to prevent About from being active when on projects section
-    if (linkPath === '/about' && currentPath.includes('#projects')) {
-      return false;
-    }
-    
-    // For hash-based links like /about#projects
+    // For other hash-based links
     if (linkPath.includes('#')) {
       return currentPath === linkPath;
     }
     
-    // For regular paths
-    return linkPath === pathname;
+    // For regular paths (like /contact, /)
+    return linkPath === pathname && !currentPath.includes('#');
   };
 
   return (

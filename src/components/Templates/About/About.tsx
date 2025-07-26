@@ -12,6 +12,15 @@ import { projectData } from "@/data/project";
 const About = () => {
   const router = useRouter();
 
+  // Initialize navigation state when component mounts
+  useEffect(() => {
+    // Ensure proper navigation state when About page loads
+    if (router.pathname === '/about' && !router.asPath.includes('#')) {
+      window.history.replaceState(null, '', '/about#top');
+      window.dispatchEvent(new Event('urlchange'));
+    }
+  }, [router.pathname, router.asPath]);
+
   // Handle scroll to sections when hash is present
   useEffect(() => {
     if (router.asPath.includes('#projects')) {
@@ -26,21 +35,25 @@ const About = () => {
       }, 500);
       
       return () => clearTimeout(timer);
-    } else if (router.asPath.includes('#top')) {
+    } else if (router.asPath.includes('#top') || router.pathname === '/about') {
       const timer = setTimeout(() => {
-        const topElement = document.getElementById('top');
         const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
-        if (topElement && scrollContainer) {
+        if (scrollContainer) {
           scrollContainer.scrollTo({
             top: 0,
             behavior: 'smooth'
           });
+          // Ensure navigation shows "about me" when at top
+          if (!router.asPath.includes('#top')) {
+            window.history.replaceState(null, '', '/about#top');
+            window.dispatchEvent(new Event('urlchange'));
+          }
         }
-      }, 500);
+      }, 100);
       
       return () => clearTimeout(timer);
     }
-  }, [router.asPath]);
+  }, [router.asPath, router.pathname]);
 
   // Handle scroll detection to update URL hash
   useEffect(() => {
@@ -52,20 +65,20 @@ const About = () => {
         const rect = projectsElement.getBoundingClientRect();
         const containerRect = scrollContainer.getBoundingClientRect();
         
-        // Check if projects section is in view (at least 50% visible)
-        const isProjectsInView = rect.top < containerRect.height * 0.5 && rect.bottom > containerRect.height * 0.5;
+        // Check if projects section is in view (at least 30% visible from top)
+        const isProjectsInView = rect.top < containerRect.height * 0.7 && rect.bottom > containerRect.height * 0.3;
         
         if (isProjectsInView && !router.asPath.includes('#projects')) {
           // Update URL to show projects hash
           window.history.replaceState(null, '', '/about#projects');
           // Dispatch custom event to notify Nav component
           window.dispatchEvent(new Event('urlchange'));
-        } else if (!isProjectsInView && router.asPath.includes('#projects')) {
-          // When scrolling away from projects, go back to top section
+        } else if (!isProjectsInView && router.asPath.includes('#projects') && scrollContainer.scrollTop < projectsElement.offsetTop - 200) {
+          // When scrolling away from projects (upward), go back to top section
           window.history.replaceState(null, '', '/about#top');
           // Dispatch custom event to notify Nav component
           window.dispatchEvent(new Event('urlchange'));
-        } else if (!router.asPath.includes('#') && scrollContainer.scrollTop < 100) {
+        } else if (!router.asPath.includes('#') || (router.pathname === '/about' && scrollContainer.scrollTop < 100 && !router.asPath.includes('#top'))) {
           // When at the very top and no hash, set to top hash
           window.history.replaceState(null, '', '/about#top');
           // Dispatch custom event to notify Nav component
@@ -77,11 +90,14 @@ const About = () => {
     const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
     if (scrollContainer) {
       scrollContainer.addEventListener('scroll', handleScroll);
-      // Initial check
-      handleScroll();
-      return () => scrollContainer.removeEventListener('scroll', handleScroll);
+      // Initial check with delay to ensure DOM is ready
+      const timer = setTimeout(handleScroll, 200);
+      return () => {
+        scrollContainer.removeEventListener('scroll', handleScroll);
+        clearTimeout(timer);
+      };
     }
-  }, [router.asPath]);
+  }, [router.asPath, router.pathname]);
   const educationData = [
     {
       degree: "Bachelor of Technology in Artificial Intelligence and Data Science",
@@ -223,13 +239,25 @@ const About = () => {
       earnedOn: "June 2024",
       expiresOn: "Never Expires",
       certificateId: "46d61bb25ce0",
-      verificationUrl: "https://education.oracle.com/certification",
-      backgroundImage: "/HackerRankcertifiedSQLIntermediate.jpg"
+      verificationUrl: "https://www.hackerrank.com/certificates/46d61bb25ce0",
+      backgroundImage: "/HackerRankcertifiedSQLIntermediate.png"
+    },
+    
+    {
+      name: "NAT - N5 japanese Language Proficiency certification",
+      issuer: "NAT",
+      earnedOn: "June 2025",
+      expiresOn: "Never Expires",
+      certificateId: "NA",
+      verificationUrl: "https://drive.google.com/file/d/1lEiurHvwODSIiJySUONd5P8SfJC1-c8F/view?usp=sharing",
+      backgroundImage: "/natn5certificate.png"
     }
   ];
 
   return (
-    <div className="h-screen overflow-hidden relative">
+    <div className="h-screen w-full relative overflow-hidden">
+      <ParticlesContainer />
+      
       <motion.div
         variants={fadeIn("right", 0.2)}
         initial="hidden"
@@ -240,10 +268,10 @@ const About = () => {
         <Avatar opacity={true} />
       </motion.div>
       
-      {/* Main Scrollable Container */}
-      <div className="h-full overflow-y-auto scrollbar-custom">
-        <div className="container mx-auto px-4 xl:px-0 relative z-10 py-20 xl:py-32">
-          {/* About Me Description */}
+      {/* Single Full-Screen Scrollable Container */}
+      <div className="h-full w-full overflow-y-auto scrollbar-custom">
+        <div className="min-h-screen container mx-auto px-6 xl:px-8 relative z-10 py-12 xl:py-16">
+          {/* About Me Section */}
           <motion.div
             id="top"
             variants={fadeIn("down", 0.2)}
@@ -252,11 +280,11 @@ const About = () => {
             exit="hidden"
             className="mb-12 xl:mb-16"
           >
-            <h2 className="h2 z-10 mb-6 text-center xl:text-left">
+            <h2 className="h2 z-10 mb-6 text-center xl:text-left text-3xl xl:text-4xl">
               About <span className="text-accent">Me</span>
             </h2>
-            <p className="text-white/80 text-lg leading-relaxed max-w-4xl mx-auto xl:mx-0 text-center xl:text-left">
-              I'm Kushal, a final-year B.Tech student specializing in Artificial Intelligence & Data Science with a focus on Cloud and Edge Computing at KL University. Passionate about building innovative, real-world AI solutions, I have hands-on experience in Python, Django, RESTful APIs, and integrating large language models (LLMs) into production systems. In my free time, I love listening to music and playing basketball, which help me stay creative, energized, and balanced.
+            <p className="text-white/80 text-lg xl:text-xl leading-relaxed max-w-5xl mx-auto xl:mx-0 text-center xl:text-left">
+              I'm Kushal, a final-year B.Tech student specializing in Artificial Intelligence & Data Science with a focus on Cloud and Edge Computing at KL University. Passionate about building innovative, real-world AI solutions, I have hands-on experience in Python, Django, RESTful APIs, and integrating large language models (LLMs) into production systems.
             </p>
           </motion.div>
 
@@ -269,22 +297,21 @@ const About = () => {
             className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-12 mb-12 xl:mb-16"
           >
             {/* Education Section */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 xl:p-8 border border-white/10">
-              <h3 className="text-2xl font-bold text-white mb-6 flex items-center justify-center xl:justify-start">
-                <span className="text-accent mr-2">📚</span>
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 xl:p-8 border border-white/10">
+              <h3 className="text-2xl xl:text-3xl font-bold text-white mb-6 flex items-center justify-center xl:justify-start">
+                <span className="text-accent mr-3 text-2xl">📚</span>
                 Education
               </h3>
               <div className="space-y-6">
                 {educationData.map((edu, index) => (
                   <div key={index} className="border-l-2 border-accent/50 pl-4">
                     <div className="flex flex-col space-y-2">
-                      <h4 className="font-semibold text-white text-lg">{edu.degree}</h4>
-                      <p className="text-accent font-medium">{edu.institution}</p>
+                      <h4 className="font-semibold text-white text-lg xl:text-xl">{edu.degree}</h4>
+                      <p className="text-accent font-medium text-base xl:text-lg">{edu.institution}</p>
                       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                        <span className="text-white/60 text-sm">{edu.period}</span>
-                        <span className="text-accent text-sm font-medium">CGPA: {edu.cgpa}</span>
+                        <span className="text-white/60 text-sm xl:text-base">{edu.period}</span>
+                        <span className="text-accent text-sm xl:text-base font-medium">CGPA: {edu.cgpa}</span>
                       </div>
-                      <p className="text-white/70 text-sm">{edu.description}</p>
                     </div>
                   </div>
                 ))}
@@ -292,19 +319,18 @@ const About = () => {
             </div>
 
             {/* Work Experience Section */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 xl:p-8 border border-white/10">
-              <h3 className="text-2xl font-bold text-white mb-6 flex items-center justify-center xl:justify-start">
-                <span className="text-accent mr-2">💼</span>
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 xl:p-8 border border-white/10">
+              <h3 className="text-2xl xl:text-3xl font-bold text-white mb-6 flex items-center justify-center xl:justify-start">
+                <span className="text-accent mr-3 text-2xl">💼</span>
                 Work Experience
               </h3>
               <div className="space-y-6">
                 {workExperienceData.map((work, index) => (
                   <div key={index} className="border-l-2 border-accent/50 pl-4">
                     <div className="flex flex-col space-y-2">
-                      <h4 className="font-semibold text-white text-lg">{work.position}</h4>
-                      <p className="text-accent font-medium">{work.company}</p>
-                      <span className="text-white/60 text-sm">{work.period}</span>
-                      <p className="text-white/70 text-sm">{work.description}</p>
+                      <h4 className="font-semibold text-white text-lg xl:text-xl">{work.position}</h4>
+                      <p className="text-accent font-medium text-base xl:text-lg">{work.company}</p>
+                      <span className="text-white/60 text-sm xl:text-base">{work.period}</span>
                     </div>
                   </div>
                 ))}
@@ -318,28 +344,28 @@ const About = () => {
             initial="hidden"
             animate="show"
             exit="hidden"
-            className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 xl:p-8 border border-white/10 mb-12"
+            className="bg-white/5 backdrop-blur-sm rounded-xl p-6 xl:p-8 border border-white/10 mb-12 xl:mb-16"
           >
-            <h3 className="text-2xl font-bold text-white mb-8 flex items-center justify-center xl:justify-start">
-              <span className="text-accent mr-2">🛠️</span>
+            <h3 className="text-2xl xl:text-3xl font-bold text-white mb-8 flex items-center justify-center xl:justify-start">
+              <span className="text-accent mr-3 text-2xl">🛠️</span>
               Technical Skills
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
               {skillsData.map((skillCategory, index) => (
-                <div key={index} className="bg-white/5 rounded-xl p-6 border border-white/10 hover:border-accent/30 transition-all duration-300">
-                  <h4 className="text-xl font-semibold text-white mb-4 text-center">
+                <div key={index} className="bg-white/5 rounded-lg p-6 xl:p-8 border border-white/10 hover:border-accent/30 transition-all duration-300">
+                  <h4 className="text-xl xl:text-2xl font-semibold text-white mb-4 text-center">
                     {skillCategory.category}
                   </h4>
                   <div className="flex flex-wrap gap-3 justify-center">
                     {skillCategory.items.map((skill, skillIndex) => (
                       <div
                         key={skillIndex}
-                        className="transition-all duration-300 hover:scale-105"
+                        className="transition-all duration-300 hover:scale-110"
                       >
                         <img
                           src={skill.badge}
                           alt={skill.name}
-                          className="skill-badge-image"
+                          className="skill-badge-image h-8 xl:h-9"
                         />
                       </div>
                     ))}
@@ -355,67 +381,53 @@ const About = () => {
             initial="hidden"
             animate="show"
             exit="hidden"
-            className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 xl:p-8 border border-white/10 mb-12"
+            className="bg-white/5 backdrop-blur-sm rounded-xl p-6 xl:p-8 border border-white/10 mb-12 xl:mb-16"
           >
-            <h3 className="text-2xl font-bold text-white mb-8 flex items-center justify-center xl:justify-start">
-              <span className="text-accent mr-2">🏆</span>
+            <h3 className="text-2xl xl:text-3xl font-bold text-white mb-8 flex items-center justify-center xl:justify-start">
+              <span className="text-accent mr-3 text-2xl">🏆</span>
               Certifications
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
               {certificationsData.map((cert, index) => (
                 <div 
                   key={index} 
-                  className="relative group cursor-pointer overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl h-full transition-all duration-300 hover:bg-white/15 hover:border-accent/50 hover:scale-105"
+                  className="relative group cursor-pointer overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg h-60 xl:h-64 transition-all duration-300 hover:bg-white/15 hover:border-accent/50 hover:scale-105"
                   onClick={() => window.open(cert.verificationUrl, '_blank')}
                 >
-                  {/* Background Certificate Image with Enhanced Visibility */}
+                  {/* Background Certificate Image */}
                   <div 
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 group-hover:opacity-80 transition-opacity duration-300"
                     style={{ backgroundImage: `url(${cert.backgroundImage})` }}
                   ></div>
                   
-                  {/* Light Overlay for Text Readability */}
+                  {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-black/60 group-hover:from-black/30 group-hover:via-black/10 group-hover:to-black/50 transition-all duration-300"></div>
                   
                   {/* Content */}
-                  <div className="relative z-10 p-6 h-full flex flex-col">
-                    {/* Header */}
-                    <div className="flex items-start mb-4">
-                      <span className="text-accent text-2xl mr-3">🎓</span>
+                  <div className="relative z-10 p-4 xl:p-5 h-full flex flex-col">
+                    <div className="flex items-start mb-3">
+                      <span className="text-accent text-xl mr-3">🎓</span>
                       <div className="flex-1">
-                        <h4 className="text-lg font-bold text-white line-clamp-2 mb-2">
+                        <h4 className="text-sm xl:text-base font-bold text-white line-clamp-2 mb-2">
                           {cert.name}
                         </h4>
                       </div>
                     </div>
                     
-                    {/* Certificate Details */}
-                    <div className="space-y-3 flex-grow">
+                    <div className="space-y-2 flex-grow text-sm">
                       <div className="flex justify-between items-center">
-                        <span className="text-white/70 text-sm">Issued by:</span>
-                        <span className="text-accent font-medium text-sm">{cert.issuer}</span>
+                        <span className="text-white/70">Issued by:</span>
+                        <span className="text-accent font-medium">{cert.issuer}</span>
                       </div>
-                      
                       <div className="flex justify-between items-center">
-                        <span className="text-white/70 text-sm">Earned on:</span>
-                        <span className="text-white/90 font-medium text-sm">{cert.earnedOn}</span>
-                      </div>
-                      
-                      <div className="flex justify-between items-center">
-                        <span className="text-white/70 text-sm">Expires on:</span>
-                        <span className="text-white/90 font-medium text-sm">{cert.expiresOn}</span>
-                      </div>
-                      
-                      <div className="flex justify-between items-center">
-                        <span className="text-white/70 text-sm">Certificate ID:</span>
-                        <span className="text-white/80 font-mono text-xs">{cert.certificateId.slice(-8)}</span>
+                        <span className="text-white/70">Earned:</span>
+                        <span className="text-white/90 font-medium">{cert.earnedOn}</span>
                       </div>
                     </div>
                     
-                    {/* Click to view indicator */}
-                    <div className="mt-4 pt-3 border-t border-white/10">
-                      <div className="flex items-center justify-center text-accent text-xs group-hover:text-white transition-colors duration-300">
-                        <span className="mr-1">🔗</span>
+                    <div className="mt-3 pt-3 border-t border-white/10">
+                      <div className="flex items-center justify-center text-accent text-sm group-hover:text-white transition-colors duration-300">
+                        <span className="mr-2">🔗</span>
                         <span>Click to verify</span>
                       </div>
                     </div>
@@ -432,27 +444,27 @@ const About = () => {
             initial="hidden"
             animate="show"
             exit="hidden"
-            className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 xl:p-8 border border-white/10 mb-12"
+            className="bg-white/5 backdrop-blur-sm rounded-xl p-6 xl:p-8 border border-white/10 mb-12 xl:mb-16"
           >
-            <h3 className="text-2xl font-bold text-white mb-8 flex items-center justify-center xl:justify-start">
-              <span className="text-accent mr-2">🚀</span>
+            <h3 className="text-2xl xl:text-3xl font-bold text-white mb-8 flex items-center justify-center xl:justify-start">
+              <span className="text-accent mr-3 text-2xl">🚀</span>
               Featured Projects
             </h3>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8">
               {projectData.map((project, index) => (
                 <motion.div
                   key={index}
-                  initial={{ y: 50, opacity: 0, scale: 0.9 }}
+                  initial={{ y: 30, opacity: 0, scale: 0.95 }}
                   animate={{ y: 0, opacity: 1, scale: 1 }}
                   transition={{ 
                     delay: index * 0.1,
-                    duration: 0.5,
+                    duration: 0.4,
                     ease: "easeOut"
                   }}
                   whileHover={{ 
-                    y: -10,
-                    scale: 1.02,
-                    transition: { duration: 0.3 }
+                    y: -8,
+                    scale: 1.03,
+                    transition: { duration: 0.2 }
                   }}
                   className="group relative"
                 >
@@ -461,13 +473,13 @@ const About = () => {
                       className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                       initial={false}
                     />
-                    <div className="relative z-10 transition-transform duration-300 group-hover:scale-[1.02]">
+                    <div className="relative z-10 transition-transform duration-300 group-hover:scale-[1.01]">
                       <ProjectCard id={index} project={project} specialStyle={true} />
                     </div>
                     
                     {/* Glow effect */}
                     <motion.div 
-                      className="absolute -inset-1 bg-gradient-to-r from-accent/20 via-accent/30 to-accent/20 rounded-lg opacity-0 blur-lg group-hover:opacity-100 transition-opacity duration-300 -z-10"
+                      className="absolute -inset-2 bg-gradient-to-r from-accent/20 via-accent/30 to-accent/20 rounded-lg opacity-0 blur-lg group-hover:opacity-100 transition-opacity duration-300 -z-10"
                       initial={false}
                     />
                   </div>
@@ -476,16 +488,15 @@ const About = () => {
             </div>
           </motion.div>
 
-          {/* Additional spacing at the bottom for better scrolling experience */}
-          <div className="h-20"></div>
+          {/* Bottom spacing */}
+          <div className="h-16"></div>
         </div>
       </div>
 
       {/* Background */}
-      <div className="w-[100vw] h-full absolute right-0 bottom-0 -z-10">
+      <div className="w-full h-full absolute right-0 bottom-0 -z-10">
         <div className="xl:opacity-100 opacity-30 bg-paints bg-cover bg-center bg-no-repeat hue-rotate-[-20deg] w-full h-full absolute mix-blend-color-dodge translate-z-0">
         </div>
-        <ParticlesContainer />
       </div>
     </div>
   );
