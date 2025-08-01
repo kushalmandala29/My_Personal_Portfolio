@@ -183,6 +183,7 @@ const About = () => {
           maxVisibility = visibility;
           currentSection = section.hash;
         }
+        
       });
       
       // Special case: if we're at the very top, always show home
@@ -254,7 +255,7 @@ const About = () => {
 
   const workExperienceData = [
     {
-      position: "Research Assistant",
+      position: "Term Paper ",
       company: "KLGLUG + BalaSwecha(SwechaAP)",
       period: "Feb 2025 - Apr 2025",
       description: "Working on term paper research focusing on open-source technologies and community development."
@@ -337,13 +338,13 @@ const About = () => {
 
   const certificationsData = [
     {
-      name: "Oracle Cloud Infrastructure 2024 AI Certified Foundations Associate",
-      issuer: "Oracle",
-      earnedOn: "July 2024",
-      expiresOn: "July 2026",
-      certificateId: "A77DDE0D6389956619942BF1D476D6A7F935062EB60432F7193ED37E45A9EF51",
-      verificationUrl: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=A77DDE0D6389956619942BF1D476D6A7F935062EB60432F7193ED37E45A9EF51",
-      backgroundImage: "/OracleCloudInfrastructure2024GenerativeAICertifiedProfessional.png"
+      name: "AWS Certified Cloud Practitioner",
+      issuer: "AWS",
+      earnedOn: "July 2025",
+      expiresOn: "July 2028",
+      certificateId: "f5b2db1925584d68adb105aa2f7e8fc3",
+      verificationUrl: "https://cp.certmetrics.com/amazon/en/public/verify/credential/f5b2db1925584d68adb105aa2f7e8fc3",
+      backgroundImage: "/AWSCertifiedCloudPractitionercertificatepage.jpg"
     },
     {
       name: "Google Associate Cloud Engineer",
@@ -371,6 +372,15 @@ const About = () => {
       certificateId: "46d61bb25ce0",
       verificationUrl: "https://www.hackerrank.com/certificates/46d61bb25ce0",
       backgroundImage: "/HackerRankcertifiedSQLIntermediate.png"
+    },
+    {
+      name: "Oracle Cloud Infrastructure 2024 AI Certified Foundations Associate",
+      issuer: "Oracle",
+      earnedOn: "July 2024",
+      expiresOn: "July 2026",
+      certificateId: "A77DDE0D6389956619942BF1D476D6A7F935062EB60432F7193ED37E45A9EF51",
+      verificationUrl: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=A77DDE0D6389956619942BF1D476D6A7F935062EB60432F7193ED37E45A9EF51",
+      backgroundImage: "/OracleCloudInfrastructure2024GenerativeAICertifiedProfessional.png"
     },
     
     {
@@ -417,7 +427,7 @@ const About = () => {
                 <span className="text-accent">Kushal</span>
               </h1>
               <p className="max-w-lg xl:max-w-2xl mx-auto xl:mx-0 mb-10 xl:mb-8 text-lg xl:text-xl text-white/80">
-                I'm a 3rd-year AI & Data Science student at KL University with a strong passion for building solutions that bridge data, code, and the cloud. 
+                I'm a Final year AI & Data Science student at KL University with a strong passion for building solutions that bridge data, code, and the cloud. 
               </p>
               
               {/* Buttons container */}
