@@ -34,7 +34,7 @@ export const projectData = [
     slug: "interactive-projectile-motion-simulation",
     image: "/projectile_motion.png",
     category: "front end",
-    name: "Interactive_Projectile_Motion_Simulation_accross_planets",
+    name: "Interactive Projectile Motion Simulation accross planets",
     description: "Interactive_Projectile_Motion_Simulation_accross_planets is an interactive web-based simulation that visualizes how projectiles behave under different planetary gravities, allowing users to explore the effects of varying gravity on projectile trajectories across the Solar System.",
     longDescription: "This simulation provides a hands-on way to learn about projectile motion physics by letting users launch virtual projectiles on different planets with accurate gravitational settings. It uses a real-time 3D rendering engine to display trajectories affected by each planet’s unique gravity, giving an intuitive understanding of how factors like initial velocity, angle, and planetary gravity influence projectile paths. By offering adjustable parameters and dynamic visual feedback, the tool helps students and enthusiasts deepen their understanding of classical mechanics concepts in an engaging and interactive environment.",
     technologies: ['JavaScript ES6+', 'Three.js', 'Cannon.js', 'WebGL 2.0', 'HTML5', 'CSS3','MediaPipe','TensorFlow.js'],

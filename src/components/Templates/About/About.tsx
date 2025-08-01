@@ -1,16 +1,91 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
+import { RiArrowRightLine } from "react-icons/ri";
+import emailjs from "@emailjs/browser";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import schema from "@/validators/sendEmail";
+import Swal from "sweetalert2";
 
 import { fadeIn } from "@/components/Animations/FadeIn";
+import { SendEmailInterface } from "@/interfaces/SendEmailInterface";
 import ParticlesContainer from "@/components/Other/ParticlesContainer/ParticlesContainer";
 import Avatar from "@/components/Other/Avatar/Avatar";
 import ProjectCard from "@/components/Other/ProjectCard/ProjectCard";
+import ProjectsBtn from "@/components/Other/ProjectsBtn/ProjectsBtn";
+import ResumeBtn from "@/components/Other/ResumeBtn/ResumeBtn";
 
 import { projectData } from "@/data/project";
 
 const About = () => {
   const router = useRouter();
+
+  // Contact form setup
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<SendEmailInterface>({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit: SubmitHandler<SendEmailInterface> = (data) => {
+    const templateParams = {
+      name: data.name,
+      subject: data.subject,
+      message: data.message,
+      email: data.email,
+      url: window.location.href,
+    };
+
+    const serviceId = process.env.NEXT_PUBLIC_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      throw new Error("Environment variables are not defined correctly.");
+    }
+
+    emailjs
+      .send(serviceId.toString(), templateId.toString(), templateParams, publicKey.toString())
+      .then(
+        (response) => {
+          console.log('Email sent successfully:', response);
+          reset();
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Message sent successfully!",
+            text: "Thank you for reaching out. I'll get back to you soon.",
+            showConfirmButton: false,
+            timer: 3000,
+            customClass: {
+              popup: 'bg-primary border-2 border-accent/20',
+              title: 'text-white',
+              htmlContainer: 'text-white/80'
+            }
+          });
+        },
+        (error) => {
+          console.error('Email send failed:', error);
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Failed to send message",
+            text: "Something went wrong. Please try again later.",
+            showConfirmButton: false,
+            timer: 3000,
+            customClass: {
+              popup: 'bg-primary border-2 border-red-500/20',
+              title: 'text-white',
+              htmlContainer: 'text-white/80'
+            }
+          });
+        }
+      );
+  };
 
   // Initialize navigation state when component mounts
   useEffect(() => {
@@ -23,18 +98,36 @@ const About = () => {
 
   // Handle scroll to sections when hash is present
   useEffect(() => {
-    if (router.asPath.includes('#projects')) {
+    const scrollToSection = (sectionId: string) => {
       const timer = setTimeout(() => {
-        const projectsElement = document.getElementById('projects');
-        if (projectsElement) {
-          projectsElement.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
+        const element = document.getElementById(sectionId);
+        const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
+        
+        if (element && scrollContainer) {
+          const elementTop = element.offsetTop;
+          // Calculate offset to prevent overlap with the heading
+          // The heading has "text-4xl xl:text-6xl" which is roughly 56px-96px height
+          // Adding extra padding for better visual spacing
+          const offset = sectionId === 'home' ? 0 : 120; // No offset for home, 120px for others
+          
+          scrollContainer.scrollTo({
+            top: Math.max(0, elementTop - offset),
+            behavior: 'smooth'
           });
         }
-      }, 500);
+      }, 300); // Reduced delay for better responsiveness
       
       return () => clearTimeout(timer);
+    };
+
+    if (router.asPath.includes('#home')) {
+      scrollToSection('home');
+    } else if (router.asPath.includes('#about')) {
+      scrollToSection('about');
+    } else if (router.asPath.includes('#projects')) {
+      scrollToSection('projects');
+    } else if (router.asPath.includes('#contact')) {
+      scrollToSection('contact');
     } else if (router.asPath.includes('#top') || router.pathname === '/about') {
       const timer = setTimeout(() => {
         const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
@@ -43,9 +136,9 @@ const About = () => {
             top: 0,
             behavior: 'smooth'
           });
-          // Ensure navigation shows "about me" when at top
-          if (!router.asPath.includes('#top')) {
-            window.history.replaceState(null, '', '/about#top');
+          // Ensure navigation shows "Home" when at top
+          if (!router.asPath.includes('#home')) {
+            window.history.replaceState(null, '', '/about#home');
             window.dispatchEvent(new Event('urlchange'));
           }
         }
@@ -58,42 +151,79 @@ const About = () => {
   // Handle scroll detection to update URL hash
   useEffect(() => {
     const handleScroll = () => {
+      const homeElement = document.getElementById('home');
+      const aboutElement = document.getElementById('about');
       const projectsElement = document.getElementById('projects');
-      const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
+      const contactElement = document.getElementById('contact');
       
-      if (projectsElement && scrollContainer) {
-        const rect = projectsElement.getBoundingClientRect();
-        const containerRect = scrollContainer.getBoundingClientRect();
+      if (!homeElement || !aboutElement || !projectsElement || !contactElement) return;
+      
+      const sections = [
+        { id: 'home', element: homeElement, hash: '#home' },
+        { id: 'about', element: aboutElement, hash: '#about' },
+        { id: 'projects', element: projectsElement, hash: '#projects' },
+        { id: 'contact', element: contactElement, hash: '#contact' }
+      ];
+      
+      let currentSection = '#home';
+      let maxVisibility = 0;
+      
+      sections.forEach(section => {
+        const rect = section.element.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
         
-        // Check if projects section is in view (at least 30% visible from top)
-        const isProjectsInView = rect.top < containerRect.height * 0.7 && rect.bottom > containerRect.height * 0.3;
+        // Calculate how much of the section is visible
+        const visibleTop = Math.max(0, -rect.top);
+        const visibleBottom = Math.min(rect.height, windowHeight - rect.top);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        const visibility = visibleHeight / windowHeight;
         
-        if (isProjectsInView && !router.asPath.includes('#projects')) {
-          // Update URL to show projects hash
-          window.history.replaceState(null, '', '/about#projects');
-          // Dispatch custom event to notify Nav component
-          window.dispatchEvent(new Event('urlchange'));
-        } else if (!isProjectsInView && router.asPath.includes('#projects') && scrollContainer.scrollTop < projectsElement.offsetTop - 200) {
-          // When scrolling away from projects (upward), go back to top section
-          window.history.replaceState(null, '', '/about#top');
-          // Dispatch custom event to notify Nav component
-          window.dispatchEvent(new Event('urlchange'));
-        } else if (!router.asPath.includes('#') || (router.pathname === '/about' && scrollContainer.scrollTop < 100 && !router.asPath.includes('#top'))) {
-          // When at the very top and no hash, set to top hash
-          window.history.replaceState(null, '', '/about#top');
-          // Dispatch custom event to notify Nav component
-          window.dispatchEvent(new Event('urlchange'));
+        // If this section is more visible than the current one, use it
+        if (visibility > maxVisibility) {
+          maxVisibility = visibility;
+          currentSection = section.hash;
         }
+      });
+      
+      // Special case: if we're at the very top, always show home
+      const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
+      if (scrollContainer && scrollContainer.scrollTop < 100) {
+        currentSection = '#home';
+      }
+      
+      // Update URL if different from current hash
+      const currentUrlHash = router.asPath.split('#')[1] || 'home';
+      const newHash = currentSection.substring(1); // Remove the # symbol
+      
+      if (currentUrlHash !== newHash) {
+        window.history.replaceState(null, '', `/about${currentSection}`);
+        window.dispatchEvent(new Event('urlchange'));
       }
     };
 
     const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
     if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', handleScroll);
+      // Use throttling for better performance
+      let ticking = false;
+      const throttledScrollHandler = () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            handleScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      };
+
+      scrollContainer.addEventListener('scroll', throttledScrollHandler, { passive: true });
+      
       // Initial check with delay to ensure DOM is ready
-      const timer = setTimeout(handleScroll, 200);
+      const timer = setTimeout(() => {
+        handleScroll();
+      }, 1000);
+      
       return () => {
-        scrollContainer.removeEventListener('scroll', handleScroll);
+        scrollContainer.removeEventListener('scroll', throttledScrollHandler);
         clearTimeout(timer);
       };
     }
@@ -271,14 +401,69 @@ const About = () => {
       {/* Single Full-Screen Scrollable Container */}
       <div className="h-full w-full overflow-y-auto scrollbar-custom">
         <div className="min-h-screen container mx-auto px-6 xl:px-8 relative z-10 py-12 xl:py-16">
+          
+          {/* Home Section */}
+          <motion.div
+            id="home"
+            variants={fadeIn("down", 0.1)}
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            className="min-h-screen flex flex-col justify-start xl:justify-start items-center xl:items-start mb-8 xl:mb-12 pt-8 xl:pt-16"
+          >
+            <div className="text-center xl:text-left max-w-2xl xl:max-w-4xl w-full">
+              <h1 className="h1 xl:mt-4 mt-0 mx-auto xl:mx-0 mb-8 w-fit text-4xl xl:text-6xl">
+                Hello, My name is <br /> 
+                <span className="text-accent">Kushal</span>
+              </h1>
+              <p className="max-w-lg xl:max-w-2xl mx-auto xl:mx-0 mb-10 xl:mb-8 text-lg xl:text-xl text-white/80">
+                I'm a 3rd-year AI & Data Science student at KL University with a strong passion for building solutions that bridge data, code, and the cloud. 
+              </p>
+              
+              {/* Buttons container */}
+              <div className="flex flex-col xl:flex-row gap-4 xl:gap-6 items-center xl:items-start">
+                {/* Mobile - Projects button */}
+                <div className="flex justify-center xl:hidden relative">
+                  <ProjectsBtn />
+                </div>
+                
+                {/* Desktop - Both buttons side by side */}
+                <div className="hidden xl:flex gap-6 items-center">
+                  <motion.div
+                    variants={fadeIn("down", 0.4)}
+                    initial="hidden"
+                    animate="show"
+                    exit="hidden"
+                  >
+                    <ProjectsBtn />
+                  </motion.div>
+                  
+                  <motion.div
+                    variants={fadeIn("down", 0.6)}
+                    initial="hidden"
+                    animate="show"
+                    exit="hidden"
+                  >
+                    <ResumeBtn />
+                  </motion.div>
+                </div>
+
+                {/* Mobile - Resume button */}
+                <div className="flex justify-center xl:hidden">
+                  <ResumeBtn />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+          
           {/* About Me Section */}
           <motion.div
-            id="top"
+            id="about"
             variants={fadeIn("down", 0.2)}
             initial="hidden"
             animate="show"
             exit="hidden"
-            className="mb-12 xl:mb-16"
+            className="mb-8 xl:mb-12 pt-8 xl:pt-12"
           >
             <h2 className="h2 z-10 mb-6 text-center xl:text-left text-3xl xl:text-4xl">
               About <span className="text-accent">Me</span>
@@ -444,13 +629,13 @@ const About = () => {
             initial="hidden"
             animate="show"
             exit="hidden"
-            className="bg-white/5 backdrop-blur-sm rounded-xl p-6 xl:p-8 border border-white/10 mb-12 xl:mb-16"
+            className="bg-white/5 backdrop-blur-sm rounded-xl p-6 xl:p-8 border border-white/10 mb-8 xl:mb-12 pt-8 xl:pt-12"
           >
             <h3 className="text-2xl xl:text-3xl font-bold text-white mb-8 flex items-center justify-center xl:justify-start">
               <span className="text-accent mr-3 text-2xl">🚀</span>
               Featured Projects
             </h3>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-6">
               {projectData.map((project, index) => (
                 <motion.div
                   key={index}
@@ -462,19 +647,21 @@ const About = () => {
                     ease: "easeOut"
                   }}
                   whileHover={{ 
-                    y: -8,
-                    scale: 1.03,
+                    y: -6,
+                    scale: 1.02,
                     transition: { duration: 0.2 }
                   }}
                   className="group relative"
                 >
-                  <div className="relative overflow-hidden rounded-lg">
+                  <div className="relative overflow-hidden rounded-lg h-full">
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                       initial={false}
                     />
-                    <div className="relative z-10 transition-transform duration-300 group-hover:scale-[1.01]">
-                      <ProjectCard id={index} project={project} specialStyle={true} />
+                    <div className="relative z-10 transition-transform duration-300 group-hover:scale-[1.01] h-full">
+                      <div className="transform scale-90 h-full">
+                        <ProjectCard id={index} project={project} specialStyle={true} />
+                      </div>
                     </div>
                     
                     {/* Glow effect */}
@@ -485,6 +672,132 @@ const About = () => {
                   </div>
                 </motion.div>
               ))}
+            </div>
+          </motion.div>
+
+          {/* Contact Section */}
+          <motion.div
+            id="contact"
+            variants={fadeIn("up", 0.7)}
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            className="bg-white/5 backdrop-blur-sm rounded-xl p-6 xl:p-8 border border-white/10 mb-8 xl:mb-12 pt-8 xl:pt-12"
+          >
+            <h3 className="text-2xl xl:text-3xl font-bold text-white mb-8 flex items-center justify-center xl:justify-start">
+              <span className="text-accent mr-3 text-2xl">📧</span>
+              Contact Me
+            </h3>
+            
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-12">
+              {/* Contact Info */}
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-xl font-semibold text-white mb-4">Let's Connect!</h4>
+                  <p className="text-white/80 text-base xl:text-lg leading-relaxed">
+                    Ready to start a conversation about your next project? Get in touch with me here. 
+                    I'm excited to discuss your ideas and how I can help you achieve your software development goals.
+                  </p>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <span className="text-accent text-lg">📍</span>
+                    <span className="text-white/80">Andhra Pradesh, India</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <span className="text-accent text-lg">📧</span>
+                    <span className="text-white/80">kushalmandala29@gmail.com</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <span className="text-accent text-lg">⏰</span>
+                    <span className="text-white/80">Available for freelance work</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Form */}
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Controller
+                      name="name"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          placeholder="Your Name"
+                          className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/60 focus:border-accent focus:outline-none transition-all duration-300"
+                        />
+                      )}
+                    />
+                    {errors.name && (
+                      <p className="text-red-400 text-sm mt-1">{errors.name.message}</p>
+                    )}
+                  </div>
+                  
+                  <div>
+                    <Controller
+                      name="email"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          placeholder="Your Email"
+                          type="email"
+                          className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/60 focus:border-accent focus:outline-none transition-all duration-300"
+                        />
+                      )}
+                    />
+                    {errors.email && (
+                      <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>
+                    )}
+                  </div>
+                </div>
+                
+                <div>
+                  <Controller
+                    name="subject"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        placeholder="Subject"
+                        className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/60 focus:border-accent focus:outline-none transition-all duration-300"
+                      />
+                    )}
+                  />
+                  {errors.subject && (
+                    <p className="text-red-400 text-sm mt-1">{errors.subject.message}</p>
+                  )}
+                </div>
+                
+                <div>
+                  <Controller
+                    name="message"
+                    control={control}
+                    render={({ field }) => (
+                      <textarea
+                        {...field}
+                        placeholder="Your Message"
+                        rows={4}
+                        className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/60 focus:border-accent focus:outline-none transition-all duration-300 resize-none"
+                      />
+                    )}
+                  />
+                  {errors.message && (
+                    <p className="text-red-400 text-sm mt-1">{errors.message.message}</p>
+                  )}
+                </div>
+                
+                <button
+                  type="submit"
+                  className="group flex items-center justify-center gap-2 bg-accent hover:bg-accent/80 text-white px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 w-full md:w-auto"
+                >
+                  <span>Send Message</span>
+                  <RiArrowRightLine className="text-lg group-hover:translate-x-1 transition-transform duration-300" />
+                </button>
+              </form>
             </div>
           </motion.div>
 

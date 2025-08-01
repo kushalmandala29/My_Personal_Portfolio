@@ -109,13 +109,13 @@ const AboutMe = () => {
 
   const certificationsData = [
     {
-      name: "Oracle Cloud Infrastructure 2024 AI Certified Foundations Associate",
-      issuer: "Oracle",
-      earnedOn: "July 2024",
-      expiresOn: "July 2026",
-      certificateId: "A77DDE0D6389956619942BF1D476D6A7F935062EB60432F7193ED37E45A9EF51",
-      verificationUrl: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=A77DDE0D6389956619942BF1D476D6A7F935062EB60432F7193ED37E45A9EF51",
-      backgroundImage: "/OracleCloudInfrastructure2024GenerativeAICertifiedProfessional.png"
+      name: "AWS Certified cloud practitioner",
+      issuer: "AWS",
+      earnedOn: "July 2025",
+      expiresOn: "July 2028",
+      certificateId: "f5b2db1925584d68adb105aa2f7e8fc3",
+      verificationUrl: "https://cp.certmetrics.com/amazon/en/public/verify/credential/f5b2db1925584d68adb105aa2f7e8fc3",
+      backgroundImage: "/AWSCertifiedCloudPractitionercertificatepage.jpg"
     },
     {
       name: "Google Associate Cloud Engineer",
@@ -152,7 +152,16 @@ const AboutMe = () => {
       certificateId: "NA",
       verificationUrl: "https://drive.google.com/file/d/1lEiurHvwODSIiJySUONd5P8SfJC1-c8F/view?usp=sharing",
       backgroundImage: "/natn5certificate.png"
-    }
+    },
+    {
+      name: "Oracle Cloud Infrastructure 2024 AI Certified Foundations Associate",
+      issuer: "Oracle",
+      earnedOn: "July 2024",
+      expiresOn: "July 2026",
+      certificateId: "A77DDE0D6389956619942BF1D476D6A7F935062EB60432F7193ED37E45A9EF51",
+      verificationUrl: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=A77DDE0D6389956619942BF1D476D6A7F935062EB60432F7193ED37E45A9EF51",
+      backgroundImage: "/OracleCloudInfrastructure2024GenerativeAICertifiedProfessional.png"
+    },
   ];
 
   return (

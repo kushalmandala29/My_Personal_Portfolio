@@ -23,12 +23,12 @@ const ProjectCard = ({ project, specialStyle, id }: ProjectCardInterface) => {
   return (
     <Card 
       id={id} 
-      className="group overflow-hidden relative cursor-pointer hover:shadow-2xl transition-all duration-300"
+      className="group overflow-hidden relative cursor-pointer hover:shadow-2xl transition-all duration-300 h-full flex flex-col"
       onClick={handleCardClick}
     >
       <CardHeader className="p-0">
         <div
-          className="relative w-full h-72 flex items-center justify-center bg-gradient-to-br from-secondary/20 to-secondary/40 overflow-hidden"
+          className="relative w-full h-48 flex items-center justify-center bg-gradient-to-br from-secondary/20 to-secondary/40 overflow-hidden"
         >
           <Image
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -39,15 +39,13 @@ const ProjectCard = ({ project, specialStyle, id }: ProjectCardInterface) => {
           />
         </div>
       </CardHeader>
-      <div className="h-64 px-8 py-6 bg-black text-white">
-        <p className="h4 mb-1 text-white">{project.name}</p>
-        <p
-          className={`text-gray-300
-                text-lg  ${cardClass}`}
-        >
-          {project.description}
-        </p>
-        
+      <div className="flex-1 px-6 py-4 bg-black text-white flex flex-col justify-start min-h-[220px]">
+        <div className="flex-1">
+          <h3 className="text-lg font-bold mb-4 text-white leading-snug min-h-[3.5rem] flex items-start">{project.name}</h3>
+          <p className="text-gray-300 text-base leading-relaxed line-clamp-4">
+            {project.description}
+          </p>
+        </div>
       </div>
     </Card>
   );

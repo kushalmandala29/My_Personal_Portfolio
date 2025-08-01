@@ -12,7 +12,8 @@ const Nav = () => {
   // Listen for URL changes including those made by window.history.replaceState
   useEffect(() => {
     const handleUrlChange = () => {
-      setCurrentPath(window.location.pathname + window.location.hash);
+      const newPath = window.location.pathname + window.location.hash;
+      setCurrentPath(newPath);
     };
 
     // Listen for popstate events (back/forward browser buttons)
@@ -27,6 +28,9 @@ const Nav = () => {
     // Update current path when router.asPath changes
     setCurrentPath(router.asPath);
 
+    // Initial update
+    handleUrlChange();
+
     return () => {
       window.removeEventListener('popstate', handleUrlChange);
       window.removeEventListener('urlchange', handleUrlChange);
@@ -36,25 +40,37 @@ const Nav = () => {
 
   // Function to check if a nav item is active
   const isActive = (linkPath: string) => {
-    // Special handling for Projects section - when on /about#projects, only Projects should be active
-    if (linkPath === '/about#projects') {
-      return currentPath === '/about#projects';
-    }
+    // All navigation now happens within the unified about page with hash routing
+    const currentHash = currentPath.split('#')[1] || 'home';
+    const linkHash = linkPath.split('#')[1] || 'home';
     
-    // Special handling for About tab - it should be active when on /about#top or plain /about
-    // BUT NOT when on projects section
-    if (linkPath === '/about#top') {
-      return (currentPath === '/about#top' || (pathname === '/about' && !currentPath.includes('#'))) 
-             && !currentPath.includes('#projects');
-    }
+    return currentHash === linkHash;
+  };
+
+  // Handle smooth scroll navigation
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, linkPath: string) => {
+    e.preventDefault();
+    const hash = linkPath.split('#')[1];
     
-    // For other hash-based links
-    if (linkPath.includes('#')) {
-      return currentPath === linkPath;
+    if (hash) {
+      // Update URL immediately for better UX
+      window.history.pushState(null, '', linkPath);
+      window.dispatchEvent(new Event('urlchange'));
+      
+      // Smooth scroll to section
+      const element = document.getElementById(hash);
+      const scrollContainer = document.querySelector('.h-full.overflow-y-auto.scrollbar-custom');
+      
+      if (element && scrollContainer) {
+        const elementTop = element.offsetTop;
+        const offset = hash === 'home' ? 0 : 120; // Same offset as in About component
+        
+        scrollContainer.scrollTo({
+          top: Math.max(0, elementTop - offset),
+          behavior: 'smooth'
+        });
+      }
     }
-    
-    // For regular paths (like /contact, /)
-    return linkPath === pathname && !currentPath.includes('#');
   };
 
   return (
@@ -68,6 +84,7 @@ const Nav = () => {
               href={link.path}
               key={index}
               aria-label={link.name}
+              onClick={(e) => handleNavClick(e, link.path)}
             >
               <div className="absolute pr-14 right-0 hidden xl:group-hover:flex">
                 <div className="bg-white relative flex text-primary items-center p-[6px] rounded-[3px]">

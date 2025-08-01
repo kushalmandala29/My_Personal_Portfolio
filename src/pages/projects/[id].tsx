@@ -106,7 +106,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
                   transition={{ duration: 0.3 }}
                 />
               </motion.h1>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto xl:mx-0">
+              <p className="text-lg text-white/90 max-w-3xl mx-auto xl:mx-0">
                 {project.description}
               </p>
             </motion.div>
@@ -118,25 +118,13 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
             >
               <Card className="overflow-hidden">
                 <CardHeader className="p-0">
-                  <div className="relative w-full h-96 flex items-center justify-center bg-secondary/40 overflow-hidden group">
-                    <Image
-                      src={project.image}
-                      width={600}
-                      height={400}
-                      alt={project.name}
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-                      <Link
-                        target="_blank"
-                        href={project.github}
-                        aria-label="View code"
-                        className="bg-secondary hover:bg-secondary/80 text-white w-14 h-14 rounded-full flex justify-center items-center transition-all duration-300 transform hover:scale-110"
-                      >
-                        <RiGithubFill className="text-xl" />
-                      </Link>
-                    </div>
-                  </div>
+                  <Image
+                    src={project.image}
+                    width={600}
+                    height={400}
+                    alt={project.name}
+                    className="w-full h-96 object-cover"
+                  />
                 </CardHeader>
               </Card>
             </motion.div>
@@ -145,13 +133,13 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
             <div className="grid lg:grid-cols-2 gap-8 mb-12">
               {/* About Section */}
               <motion.div variants={fadeIn("right", 0.6)}>
-                <Card className="h-full">
+                <Card className="h-full bg-black border-gray-700">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <RiCodeSSlashLine className="text-2xl text-accent" />
-                      <h3 className="text-xl font-semibold">Description</h3>
+                      <h3 className="text-xl font-semibold text-white">Description</h3>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed">
+                    <p className="text-white leading-relaxed">
                       {project.longDescription}
                     </p>
                   </CardContent>
@@ -160,11 +148,11 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
 
               {/* Technologies */}
               <motion.div variants={fadeIn("left", 0.6)}>
-                <Card className="h-full">
+                <Card className="h-full bg-black border-gray-700">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <RiStackLine className="text-2xl text-accent" />
-                      <h3 className="text-xl font-semibold">Technology stack</h3>
+                      <h3 className="text-xl font-semibold text-white">Technology stack</h3>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {project.technologies.map((tech, index) => (
@@ -186,15 +174,15 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Features */}
               <motion.div variants={fadeIn("up", 0.8)}>
-                <Card className="h-full">
+                <Card className="h-full bg-black border-gray-700">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <RiLightbulbLine className="text-2xl text-accent" />
-                      <h3 className="text-xl font-semibold">Features</h3>
+                      <h3 className="text-xl font-semibold text-white">Features</h3>
                     </div>
                     <ul className="space-y-2">
                       {project.features.map((feature, index) => (
-                        <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                        <li key={index} className="flex items-center gap-2 text-white">
                           <span className="w-1.5 h-1.5 bg-accent rounded-full"></span>
                           {feature}
                         </li>
@@ -206,10 +194,10 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
 
               {/* Challenges */}
               <motion.div variants={fadeIn("up", 1.0)}>
-                <Card className="h-full">
+                <Card className="h-full bg-black border-gray-700">
                   <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold mb-4">Challenges</h3>
-                    <p className="text-muted-foreground leading-relaxed">
+                    <h3 className="text-xl font-semibold mb-4 text-white">Challenges</h3>
+                    <p className="text-white leading-relaxed">
                       {project.challenges}
                     </p>
                   </CardContent>
@@ -218,10 +206,10 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
 
               {/* Learnings */}
               <motion.div variants={fadeIn("up", 1.2)}>
-                <Card className="h-full">
+                <Card className="h-full bg-black border-gray-700">
                   <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold mb-4">Learnings</h3>
-                    <p className="text-muted-foreground leading-relaxed">
+                    <h3 className="text-xl font-semibold mb-4 text-white">Learnings</h3>
+                    <p className="text-white leading-relaxed">
                       {project.learnings}
                     </p>
                   </CardContent>
