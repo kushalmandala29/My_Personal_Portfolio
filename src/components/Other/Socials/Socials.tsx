@@ -5,39 +5,84 @@ import {
   RiInstagramLine,
   RiGithubLine,
   RiTwitterLine,
-  RiMailLine
+  RiMailLine,
+  RiCodeLine,
+  RiTerminalLine
 } from "react-icons/ri";
 
 const Socials = () => {
 
   return (
-    <div className="flex items-center xl:gap-x-5 gap-x-3 text-lg">
+    <div className="flex items-center justify-center xl:gap-x-6 gap-x-4 text-lg">
       <Link
         target="_blank"
         href={"https://github.com/kushalmandala29"}
-        className="hover:text-accent transition-all duration-300 xl:max-w-[26px] xl:max-h-[26px] max-w-[16px] max-h-[16px]"
+        className="flex flex-col items-center gap-2 hover:text-accent transition-all duration-300 group"
         aria-label={"github"}
       >
-        <RiGithubLine className="w-5 h-5" />
+        <div className="p-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 group-hover:border-accent/50 group-hover:bg-accent/10 transition-all duration-300">
+          <RiGithubLine className="w-6 h-6 xl:w-8 xl:h-8" />
+        </div>
+        <span className="text-xs xl:text-sm font-medium text-white/70 group-hover:text-accent transition-colors duration-300">
+          GitHub
+        </span>
       </Link>
      
      
       <Link
         target="_blank"
         href={"https://www.linkedin.com/in/kushal-mandala-3382b1249/"}
-        className="hover:text-accent transition-all duration-300 xl:max-w-[26px] xl:max-h-[26px] max-w-[16px] max-h-[16px]"
+        className="flex flex-col items-center gap-2 hover:text-accent transition-all duration-300 group"
         aria-label={"linkedin"}
       >
-        <RiLinkedinLine className="w-5 h-5" />
+        <div className="p-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 group-hover:border-accent/50 group-hover:bg-accent/10 transition-all duration-300">
+          <RiLinkedinLine className="w-6 h-6 xl:w-8 xl:h-8" />
+        </div>
+        <span className="text-xs xl:text-sm font-medium text-white/70 group-hover:text-accent transition-colors duration-300">
+          LinkedIn
+        </span>
+      </Link>
+
+      <Link
+        target="_blank"
+        href={"https://www.hackerrank.com/profile/h2200080035"}
+        className="flex flex-col items-center gap-2 hover:text-accent transition-all duration-300 group"
+        aria-label={"hackerrank"}
+      >
+        <div className="p-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 group-hover:border-accent/50 group-hover:bg-accent/10 transition-all duration-300">
+          <RiCodeLine className="w-6 h-6 xl:w-8 xl:h-8" />
+        </div>
+        <span className="text-xs xl:text-sm font-medium text-white/70 group-hover:text-accent transition-colors duration-300">
+          HackerRank
+        </span>
+      </Link>
+
+      <Link
+        target="_blank"
+        href={"https://leetcode.com/u/kushalmandala/"}
+        className="flex flex-col items-center gap-2 hover:text-accent transition-all duration-300 group"
+        aria-label={"leetcode"}
+      >
+        <div className="p-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 group-hover:border-accent/50 group-hover:bg-accent/10 transition-all duration-300">
+          <RiTerminalLine className="w-6 h-6 xl:w-8 xl:h-8" />
+        </div>
+        <span className="text-xs xl:text-sm font-medium text-white/70 group-hover:text-accent transition-colors duration-300">
+          LeetCode
+        </span>
       </Link>
    
       <Link
         target="_blank"
         href="mailto:2200080035aids@gmail.com"
-        className="hover:text-accent transition-all duration-300 xl:max-w-[26px] xl:max-h-[26px] max-w-[16px] max-h-[16px]"
+        className="flex flex-col items-center gap-2 hover:text-accent transition-all duration-300 group"
         aria-label={"email"}
       >
-        <RiMailLine className="w-5 h-5" />
+        <div className="p-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 group-hover:border-accent/50 group-hover:bg-accent/10 transition-all duration-300">
+          <RiMailLine className="w-6 h-6 xl:w-8 xl:h-8" />
+        </div>
+        <span className="text-xs xl:text-sm font-medium text-white/70 group-hover:text-accent transition-colors duration-300">
+          Email
+        </span>
       </Link>
     </div>
   );

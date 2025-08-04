@@ -13,8 +13,8 @@ import { SendEmailInterface } from "@/interfaces/SendEmailInterface";
 import ParticlesContainer from "@/components/Other/ParticlesContainer/ParticlesContainer";
 import Avatar from "@/components/Other/Avatar/Avatar";
 import ProjectCard from "@/components/Other/ProjectCard/ProjectCard";
-import ProjectsBtn from "@/components/Other/ProjectsBtn/ProjectsBtn";
 import ResumeBtn from "@/components/Other/ResumeBtn/ResumeBtn";
+import Socials from "@/components/Other/Socials/Socials";
 
 import { projectData } from "@/data/project";
 
@@ -398,16 +398,6 @@ const About = () => {
     <div className="h-screen w-full relative overflow-hidden">
       <ParticlesContainer />
       
-      <motion.div
-        variants={fadeIn("right", 0.2)}
-        initial="hidden"
-        animate="show"
-        exit="hidden"
-        className="hidden xl:flex absolute -bottom-[100px] -left-[210px] z-[0] max-w-[460px]"
-      >
-        <Avatar opacity={true} />
-      </motion.div>
-      
       {/* Single Full-Screen Scrollable Container */}
       <div className="h-full w-full overflow-y-auto scrollbar-custom">
         <div className="min-h-screen container mx-auto px-6 xl:px-8 relative z-10 py-12 xl:py-16">
@@ -421,48 +411,53 @@ const About = () => {
             exit="hidden"
             className="min-h-screen flex flex-col justify-start xl:justify-start items-center xl:items-start mb-8 xl:mb-12 pt-8 xl:pt-16"
           >
-            <div className="text-center xl:text-left max-w-2xl xl:max-w-4xl w-full">
-              <h1 className="h1 xl:mt-4 mt-0 mx-auto xl:mx-0 mb-8 w-fit text-4xl xl:text-6xl">
+            <div className="flex flex-col xl:flex-row-reverse items-center xl:items-start gap-8 xl:gap-12 text-left max-w-6xl w-full">
+              {/* Profile Picture */}
+              <div className="flex-shrink-0">
+                <div className="relative w-64 h-64 xl:w-80 xl:h-80 rounded-full overflow-hidden border-4 border-accent/30 shadow-2xl">
+                  <img 
+                    src="/avatar.webp" 
+                    alt="Kushal's Profile" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-accent/10"></div>
+                </div>
+              </div>
+              
+              {/* Text Content */}
+              <div className="flex-1 text-center xl:text-left max-w-2xl xl:max-w-4xl w-full">
+              <h1 className="h1 xl:mt-4 mt-0 mx-0 mb-8 w-fit text-4xl xl:text-6xl">
                 Hello, My name is <br /> 
                 <span className="text-accent">Kushal</span>
               </h1>
-              <p className="max-w-lg xl:max-w-2xl mx-auto xl:mx-0 mb-10 xl:mb-8 text-lg xl:text-xl text-white/80">
+              <p className="max-w-lg xl:max-w-2xl mx-0 mb-10 xl:mb-8 text-lg xl:text-xl text-white/80">
                 I'm a Final year AI & Data Science student at KL University with a strong passion for building solutions that bridge data, code, and the cloud. 
               </p>
               
               {/* Buttons container */}
-              <div className="flex flex-col xl:flex-row gap-4 xl:gap-6 items-center xl:items-start">
-                {/* Mobile - Projects button */}
-                <div className="flex justify-center xl:hidden relative">
-                  <ProjectsBtn />
-                </div>
-                
-                {/* Desktop - Both buttons side by side */}
-                <div className="hidden xl:flex gap-6 items-center">
-                  <motion.div
-                    variants={fadeIn("down", 0.4)}
-                    initial="hidden"
-                    animate="show"
-                    exit="hidden"
-                  >
-                    <ProjectsBtn />
-                  </motion.div>
-                  
-                  <motion.div
-                    variants={fadeIn("down", 0.6)}
-                    initial="hidden"
-                    animate="show"
-                    exit="hidden"
-                  >
-                    <ResumeBtn />
-                  </motion.div>
-                </div>
-
-                {/* Mobile - Resume button */}
-                <div className="flex justify-center xl:hidden">
+              <div className="flex flex-col items-start gap-4 mt-12">
+                {/* Resume button */}
+                <motion.div
+                  variants={fadeIn("down", 0.4)}
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                >
                   <ResumeBtn />
-                </div>
+                </motion.div>
+                
+                {/* Social Links under button */}
+                <motion.div
+                  variants={fadeIn("up", 0.6)}
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  className="mt-2"
+                >
+                  <Socials />
+                </motion.div>
               </div>
+            </div>
             </div>
           </motion.div>
           
