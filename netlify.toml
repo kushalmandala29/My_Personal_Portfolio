@@ -1,6 +1,6 @@
 [build]
-  command = "yarn install"
+  command = "npm run build"
   publish = "out"
 
 [dev]
-  command = "yarn dev"
+  command = "npm run dev"
