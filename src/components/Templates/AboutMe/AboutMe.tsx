@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import Image from 'next/image';
 
 import { fadeIn } from "@/components/Animations/FadeIn";
 import ParticlesContainer from "@/components/Other/ParticlesContainer/ParticlesContainer";
@@ -267,10 +268,12 @@ const AboutMe = () => {
                   </h4>
                   <div className="flex flex-wrap gap-1 justify-center">
                     {skillCategory.items.slice(0, 3).map((skill, skillIndex) => (
-                      <img
+                      <Image
                         key={skillIndex}
                         src={skill.badge}
                         alt={skill.name}
+                        width={20}
+                        height={20}
                         className="h-5"
                       />
                     ))}

@@ -556,9 +556,11 @@ const About = () => {
                         key={skillIndex}
                         className="transition-all duration-300 hover:scale-110"
                       >
-                        <img
+                        <Image
                           src={skill.badge}
                           alt={skill.name}
+                          width={36}
+                          height={36}
                           className="skill-badge-image h-8 xl:h-9"
                         />
                       </div>
