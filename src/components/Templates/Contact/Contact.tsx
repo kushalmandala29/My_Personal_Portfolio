@@ -98,7 +98,7 @@ const Contact = () => {
                 <h2
                   className="h2 text-center xl:mb-12 mb-6"
                 >
-                  Let's <span className="text-accent">talk.</span>
+                  Let&apos;s <span className="text-accent">talk.</span>
                 </h2>
                 <motion.form
                   variants={fadeIn("up", 0.4)}
