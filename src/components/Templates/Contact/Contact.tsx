@@ -50,7 +50,7 @@ const Contact = () => {
             position: "center",
             icon: "success",
             title: "Email sent successfully!",
-            text: "Thank you for contacting me. I'll get back to you soon!",
+            text: "Thank you for contacting me. I&apos;ll get back to you soon!",
             showConfirmButton: true,
             confirmButtonText: "OK",
             confirmButtonColor: "#e74c3c",

@@ -19,7 +19,7 @@ const Home = () => {
           </h1>
           <p
             className="max-w-sm xl:max-w-xl mx-auto xl:mx-0 mb-10 xl:mb-8">
-            I'm a 3rd-year AI & Data Science student at KL University with a strong passion for building solutions that bridge data, code, and the cloud. 
+            I&apos;m a 3rd-year AI & Data Science student at KL University with a strong passion for building solutions that bridge data, code, and the cloud. 
           </p>
           
           {/* Buttons container */}

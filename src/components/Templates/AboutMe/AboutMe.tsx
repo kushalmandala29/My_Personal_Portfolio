@@ -193,7 +193,7 @@ const AboutMe = () => {
               About <span className="text-accent">Me</span>
             </h2>
             <p className="text-white/80 text-lg leading-relaxed max-w-4xl mx-auto">
-              I'm Kushal, a final-year B.Tech student specializing in Artificial Intelligence & Data Science with a focus on Cloud and Edge Computing at KL University. Passionate about building innovative, real-world AI solutions, I have hands-on experience in Python, Django, RESTful APIs, and integrating large language models (LLMs) into production systems.
+              I&apos;m Kushal, a final-year B.Tech student specializing in Artificial Intelligence & Data Science with a focus on Cloud and Edge Computing at KL University. Passionate about building innovative, real-world AI solutions, I have hands-on experience in Python, Django, RESTful APIs, and integrating large language models (LLMs) into production systems.
             </p>
           </motion.div>
 

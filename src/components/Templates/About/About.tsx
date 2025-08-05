@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { RiArrowRightLine } from "react-icons/ri";
@@ -58,7 +59,7 @@ const About = () => {
             position: "center",
             icon: "success",
             title: "Message sent successfully!",
-            text: "Thank you for reaching out. I'll get back to you soon.",
+            text: "Thank you for reaching out. I&apos;ll get back to you soon.",
             showConfirmButton: false,
             timer: 3000,
             customClass: {
@@ -415,10 +416,13 @@ const About = () => {
               {/* Profile Picture */}
               <div className="flex-shrink-0">
                 <div className="relative w-64 h-64 xl:w-80 xl:h-80 rounded-full overflow-hidden border-4 border-accent/30 shadow-2xl">
-                  <img 
+                  <Image 
                     src="/avatar.webp" 
                     alt="Kushal's Profile" 
+                    width={320}
+                    height={320}
                     className="w-full h-full object-cover"
+                    priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-accent/10"></div>
                 </div>
@@ -431,7 +435,7 @@ const About = () => {
                 <span className="text-accent">Kushal</span>
               </h1>
               <p className="max-w-lg xl:max-w-2xl mx-0 mb-10 xl:mb-8 text-lg xl:text-xl text-white/80">
-                I'm a Final year AI & Data Science student at KL University with a strong passion for building solutions that bridge data, code, and the cloud. 
+                I&apos;m a Final year AI & Data Science student at KL University with a strong passion for building solutions that bridge data, code, and the cloud. 
               </p>
               
               {/* Buttons container */}
@@ -474,7 +478,7 @@ const About = () => {
               About <span className="text-accent">Me</span>
             </h2>
             <p className="text-white/80 text-lg xl:text-xl leading-relaxed max-w-5xl mx-auto xl:mx-0 text-center xl:text-left">
-              I'm Kushal, a final-year B.Tech student specializing in Artificial Intelligence & Data Science with a focus on Cloud and Edge Computing at KL University. Passionate about building innovative, real-world AI solutions, I have hands-on experience in Python, Django, RESTful APIs, and integrating large language models (LLMs) into production systems.
+              I&apos;m Kushal, a final-year B.Tech student specializing in Artificial Intelligence & Data Science with a focus on Cloud and Edge Computing at KL University. Passionate about building innovative, real-world AI solutions, I have hands-on experience in Python, Django, RESTful APIs, and integrating large language models (LLMs) into production systems.
             </p>
           </motion.div>
 
@@ -698,10 +702,10 @@ const About = () => {
               {/* Contact Info */}
               <div className="space-y-6">
                 <div>
-                  <h4 className="text-xl font-semibold text-white mb-4">Let's Connect!</h4>
+                  <h4 className="text-xl font-semibold text-white mb-4">Let&apos;s Connect!</h4>
                   <p className="text-white/80 text-base xl:text-lg leading-relaxed">
                     Ready to start a conversation about your next project? Get in touch with me here. 
-                    I'm excited to discuss your ideas and how I can help you achieve your software development goals.
+                    I&apos;m excited to discuss your ideas and how I can help you achieve your software development goals.
                   </p>
                 </div>
                 
