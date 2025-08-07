@@ -547,10 +547,10 @@ const About = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
               {skillsData.map((skillCategory, index) => (
                 <div key={index} className="bg-white/5 rounded-lg p-6 xl:p-8 border border-white/10 hover:border-accent/30 transition-all duration-300">
-                  <h4 className="text-xl xl:text-2xl font-semibold text-white mb-4 text-center">
+                  <h4 className="text-2xl xl:text-3xl font-bold text-white mb-5 text-center">
                     {skillCategory.category}
                   </h4>
-                  <div className="flex flex-wrap gap-3 justify-center">
+                  <div className="flex flex-wrap gap-4 xl:gap-5 justify-center">
                     {skillCategory.items.map((skill, skillIndex) => (
                       <div
                         key={skillIndex}
@@ -559,9 +559,9 @@ const About = () => {
                         <Image
                           src={skill.badge}
                           alt={skill.name}
-                          width={36}
-                          height={36}
-                          className="skill-badge-image h-8 xl:h-9"
+                          width={60}
+                          height={28}
+                          className="skill-badge-image h-8 xl:h-9 w-20 xl:w-28"
                         />
                       </div>
                     ))}
