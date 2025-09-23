@@ -46,7 +46,19 @@ const About = () => {
     const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY;
 
     if (!serviceId || !templateId || !publicKey) {
-      throw new Error("Environment variables are not defined correctly.");
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Configuration Error",
+        text: "Email service is not configured correctly. Please try again later.",
+        showConfirmButton: true,
+        customClass: {
+          popup: 'bg-primary border-2 border-red-500/20',
+          title: 'text-white',
+          htmlContainer: 'text-white/80'
+        }
+      });
+      return;
     }
 
     emailjs
@@ -58,8 +70,8 @@ const About = () => {
           Swal.fire({
             position: "center",
             icon: "success",
-            title: "Message sent successfully!",
-            text: "Thank you for reaching out. I&apos;ll get back to you soon.",
+            title: "Message sent!",
+            text: "Thank you for reaching out. I'll get back to you soon.",
             showConfirmButton: false,
             timer: 3000,
             customClass: {
@@ -76,8 +88,7 @@ const About = () => {
             icon: "error",
             title: "Failed to send message",
             text: "Something went wrong. Please try again later.",
-            showConfirmButton: false,
-            timer: 3000,
+            showConfirmButton: true,
             customClass: {
               popup: 'bg-primary border-2 border-red-500/20',
               title: 'text-white',
@@ -246,7 +257,7 @@ const About = () => {
       description: "Strong foundation in mathematics and sciences."
     },
     {
-      degree: "High School Diploma",
+      degree: "High School ",
       institution: "V.P.S Public School",
       period: "2011 - 2020",
       cgpa: "7.55/10",
@@ -289,7 +300,7 @@ const About = () => {
       category: "Web Development & API Design",
       items: [
         { name: "Django", badge: "https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" },
-        { name: "FastAPI", badge: "https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi&logoColor=white" },
+        { name: "FastAPI", badge: "https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi&logoColor=i white" },
         { name: "RESTful APIs", badge: "https://img.shields.io/badge/REST-02569B?style=for-the-badge&logo=rest&logoColor=white" },
         { name: "Postman", badge: "https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" }
       ]
@@ -435,7 +446,7 @@ const About = () => {
                 <span className="text-accent">Kushal</span>
               </h1>
               <p className="max-w-lg xl:max-w-2xl mx-0 mb-10 xl:mb-8 text-lg xl:text-xl text-white/80">
-                I&apos;m a Final year AI & Data Science student at KL University with a strong passion for building solutions that bridge data, code, and the cloud. 
+                I&apos;m a Final year AI & Data Science freshmen at KL University with a strong passion for building solutions that bridge data, code, and the cloud. 
               </p>
               
               {/* Buttons container */}
@@ -478,7 +489,7 @@ const About = () => {
               About <span className="text-accent">Me</span>
             </h2>
             <p className="text-white/80 text-lg xl:text-xl leading-relaxed max-w-5xl mx-auto xl:mx-0 text-center xl:text-left">
-              I&apos;m Kushal, a final-year B.Tech student specializing in Artificial Intelligence & Data Science with a focus on Cloud and Edge Computing at KL University. Passionate about building innovative, real-world AI solutions, I have hands-on experience in Python, Django, RESTful APIs, and integrating large language models (LLMs) into production systems.
+              I&apos;m Kushal, a final-year B.Tech freshmen specializing in Artificial Intelligence & Data Science with a focus on Cloud and Edge Computing at KL University. Passionate about building innovative, real-world AI solutions, I have hands-on experience in Python, Django, RESTful APIs, and integrating large language models (LLMs) into production systems.
             </p>
           </motion.div>
 
