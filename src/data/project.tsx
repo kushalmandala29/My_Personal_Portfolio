@@ -1,4 +1,39 @@
 export const projectData = [
+{
+  id: "multi-agent-trading-framework",
+  slug: "multi-agent-trading-framework",
+  image: "/smarttrade_multiagent.png",
+  category: "python",
+  name: "Multi-Agent Trading Framework (SmartTrade)",
+  description:
+    "A multi-agent trading research platform that simulates real-world trading firms using LLM-powered agents (fundamental, sentiment, news, technical, trader, risk, portfolio) to produce coordinated trading decisions.",
+  longDescription:
+    "This project implements a modular multi-agent framework that models the workflows of trading firms: data ingestion, multi-round LLM debates, signal generation, strategy execution, risk overlay and portfolio construction. Agents are orchestrated with LangGraph and use the Gemini API for multi-round debates and reasoning, while Finnhub provides live and historical market data. The system exposes both a CLI and a Python API for configurable backtesting and real-time experimentation, enabling researchers to swap LLMs, tune research depth, plug-in online tools, and evaluate strategies under realistic risk constraints.",
+  technologies: [
+    "Python 3",
+    "LangGraph",
+    "langchain",
+    "GenAI",
+    "Agentic AI",
+    "reasoning"
+
+  ],
+  features: [
+    "LLM-powered agent types: Fundamental, Sentiment, News, Technical, Trader, Risk, Portfolio",
+    "Multi-round debate workflow (Gemini) to aggregate and reconcile agent opinions",
+    "Modular LangGraph orchestration for pluggable agent pipelines",
+    "Finnhub integration for historical and live market data",
+    "Risk assessment overlays (drawdown, position sizing, constraints) and portfolio construction",
+    "Support for custom LLMs, research depth settings, and online tool integrations"
+  ],
+  challenges:
+    "Coordinating asynchronous multi-agent debates while keeping latency reasonable and avoiding cascading errors; ensuring reproducible backtests and avoiding lookahead bias when combining LLM outputs with market data; handling noisy or incomplete financial data from external APIs; tuning the interface between model opinions and executable trading signals while preserving sensible risk controls.",
+  learnings:
+    "Designed and implemented multi-agent orchestration patterns for financial decision-making, learned to integrate LLMs (via Gemini) into iterative debate workflows, built robust data pipelines with Finnhub, and developed tools for reproducible backtesting and real-time experiment management. Gained experience balancing research flexibility (pluggable LLMs, depth) with engineering constraints (latency, reliability, risk management).",
+  link: "https://github.com/kushalmandala29/SmartTrade",
+  github: "https://github.com/kushalmandala29/SmartTrade"
+},
+
   {
     id: "toxitrack-serverless-telegram-moderator",
     slug: "toxitrack-serverless-telegram-moderator",
@@ -59,21 +94,7 @@ export const projectData = [
     link: "https://www.grupodogma.site/",
     github: "https://github.com/kushalmandala29/employment-leave-management-system.git"
   },
-  {
-    id: "music-recommendation-system",
-    slug: "music-recommendation-system",
-    image: "/music_recommdationsystem.png",
-    category: "front end",
-    name: "Music Recommendation System",
-    description: "Music Recommendation System is a text-based recommendation engine that analyzes song lyrics or descriptions to group similar songs and suggest personalized recommendations, leveraging text processing and unsupervised learning techniques.",
-    longDescription: "This system uses TF-IDF (Term Frequency-Inverse Document Frequency) to vectorize song lyrics or metadata, capturing their semantic meaning. By applying K-means clustering, it groups songs with similar themes or characteristics, enabling the recommendation of new songs based on lyrical or descriptive similarity. Evaluation metrics like Silhouette Score and the Elbow Method help optimize the number of clusters for better recommendation accuracy. The system includes a Streamlit-based user interface for interactive exploration, allowing users to input a song and receive a curated list of similar tracks.",
-    technologies: ['Python 3', 'Scikit-learn', 'Streamlit'],
-    features: ['TF-IDF Text Vectorization', 'K-means Clustering of Songs', 'Silhouette Score Evaluation', 'Elbow Method for Cluster Optimization', 'Streamlit Interactive UI'],
-    challenges: "A key challenge was tuning the text processing pipeline to handle diverse song lyric styles, including short phrases, slang, or multilingual elements. Determining the optimal number of clusters for meaningful groupings required extensive evaluation and interpretation of clustering metrics. Integrating the recommendation logic with an interactive Streamlit interface while keeping response times low also posed technical hurdles.",
-    learnings: "I learned how to apply natural language processing techniques like TF-IDF to real-world text data, optimize K-means clustering for recommendation systems, and evaluate clustering performance using appropriate metrics. Additionally, I gained hands-on experience building interactive data apps with Streamlit and deploying end-to-end recommendation pipelines.",
-    link: "https://developer-blue-portfolio-vagnermengali.vercel.app/",
-    github: "https://github.com/kushalmandala29/Music-Recommendation-Project.git"
-  },
+
   {
     id: "dog-breed-classification",
     slug: "dog-breed-classification",
