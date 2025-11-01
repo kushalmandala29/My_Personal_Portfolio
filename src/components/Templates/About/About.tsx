@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
@@ -21,6 +21,31 @@ import { projectData } from "@/data/project";
 
 const About = () => {
   const router = useRouter();
+
+  // Avatar source: prefer PNG if available in the public folder, otherwise fallback to existing WEBP
+  const [avatarSrc, setAvatarSrc] = useState<string>("/avatar.webp");
+
+  useEffect(() => {
+    let mounted = true;
+
+    const checkPng = async () => {
+      try {
+        const res = await fetch('/avatar.png', { method: 'HEAD' });
+        if (mounted && res.ok) {
+          setAvatarSrc('/avatar.png');
+        }
+      } catch (e) {
+        // if fetch fails, keep the default WEBP
+      }
+    };
+
+    // Only run on client
+    checkPng();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   // Contact form setup
   const {
@@ -426,12 +451,12 @@ const About = () => {
             <div className="flex flex-col xl:flex-row-reverse items-center xl:items-start gap-8 xl:gap-12 text-left max-w-6xl w-full">
               {/* Profile Picture */}
               <div className="flex-shrink-0">
-                <div className="relative w-64 h-64 xl:w-80 xl:h-80 rounded-full overflow-hidden border-4 border-accent/30 shadow-2xl">
+                <div className="relative w-80 h-80 xl:w-96 xl:h-96 rounded-full overflow-hidden border-4 border-accent/30 shadow-2xl">
                   <Image 
-                    src="/avatar.webp" 
+                    src={avatarSrc}
                     alt="Kushal's Profile" 
-                    width={320}
-                    height={320}
+                    width={384}
+                    height={384}
                     className="w-full h-full object-cover"
                     priority
                   />
